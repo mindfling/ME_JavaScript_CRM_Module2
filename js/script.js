@@ -60,60 +60,53 @@ const createElem = (tag, attr = {}, text) => {
 //   title: 'Заголовок',
 // }));
 
-// ? ВОПРОС возможно лучше генерировать 
+// ? ВОПРОС возможно лучше генерировать
 // ? строку таблицы с помощью createElement ?
 // function createRow вставка ряда с помощью createElement
-const createRow = (rowNumber, {id, title, category, units, count, price}) => {
+const createRow = (rowNumber, {
+  id,
+  title,
+  category,
+  units,
+  count,
+  price,
+}) => {
   // генерируем динамически по элементам
   const euroSymb = '&#8364;';
   const row = createElem('tr');
 
   const cellNumb = createElem(
     'td',
-    {
-      className: 'table__cell',
-    },
+    {className: 'table__cell'},
     rowNumber,
   );
 
   const cellID = createElem(
     'td',
-    {
-      className: 'table__cell table__cell_left table__cell_name',
-    },
+    {className: 'table__cell table__cell_left table__cell_name'},
     title,
   );
   cellID.prepend(
     createElem(
       'span',
-      {
-        className: 'table__cell-id',
-      },
+      {className: 'table__cell-id'},
       `id: ${id}`,
     ),
   );
 
-  const cellCategory = createElem(
-    'td',
-    {
-      className: 'table__cell table__cell_left',
-    },
-    category,
+  const cellCategory = createElem('td', {
+    className: 'table__cell table__cell_left',
+  },
+  category,
   );
 
-  const cellUnits = createElem(
-    'td',
-    {
-      className: 'table__cell',
-    },
+  const cellUnits = createElem('td',
+    {className: 'table__cell'},
     units,
   );
 
-  const cellCount = createElem(
-    'td',
-    {
-      className: 'table__cell',
-    },
+  const cellCount = createElem('td',
+    {className: 'table__cell'},
     count,
   );
 
@@ -127,6 +120,26 @@ const createRow = (rowNumber, {id, title, category, units, count, price}) => {
   });
   cellSum.innerHTML = `${euroSymb} ${count * price}`;
 
+  const cellBtnsGroup = createElem('td', {
+    className: 'table__cell table__cell_btn-wrapper',
+  });
+  const btnPic = createElem('button', {
+    className: 'table__btn table__btn_pic',
+    type: 'button',
+    title: 'Изображение товара',
+  });
+  const btnEdit = createElem('button', {
+    className: 'table__btn table__btn_edit',
+    type: 'button',
+    title: 'Редактировать товар',
+  });
+  const btnDel = createElem('button', {
+    className: 'table__btn table__btn_del',
+    type: 'button',
+    title: 'Удалить товар',
+  });
+  cellBtnsGroup.append(btnPic, btnEdit, btnDel);
+
   row.append(
     cellNumb,
     cellID,
@@ -135,6 +148,7 @@ const createRow = (rowNumber, {id, title, category, units, count, price}) => {
     cellCount,
     cellPrice,
     cellSum,
+    cellBtnsGroup,
   );
 
   return row;
@@ -142,11 +156,11 @@ const createRow = (rowNumber, {id, title, category, units, count, price}) => {
 
 // function renderGoods перебирает массив объектов товаров и рендерит строки
 const renderGoods = (arr = []) => {
-  console.log('перебираем массив объектов');
+  // перебираем массив объектов
   if (Array.isArray(arr)) {
     arr.forEach((item, index) => {
       tableBody.append(
-        createRow(index, {
+        createRow(index + 1, {
           id: item.id,
           title: item.title,
           category: item.category,
@@ -160,6 +174,7 @@ const renderGoods = (arr = []) => {
   return;
 };
 
+// рендерим таблицу товаров
 renderGoods([
   {
     id: 1,
