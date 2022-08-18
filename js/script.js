@@ -6,7 +6,7 @@ const data = [
     id: 1111,
     title: 'Смартфон Xiaomi 11T 8/128GB',
     price: 27000,
-    description: 'Смартфон Xiaomi 11T – это представитель флагманской линейки,' +
+    description: 'Смартфон Xiaomi 11T – это представитель флагманской линейки' +
       ' выпущенной во второй половине 2021 года. И он полностью соответствует' +
       ' такому позиционированию, предоставляя своим обладателям возможность' +
       ' пользоваться отличными камерами, ни в чем себя не ограничивать при' +
@@ -86,6 +86,7 @@ const modalInputDiscount = modal.querySelector('.modal__input_discount');
 
 // закрыть overlay вместе с модальным окном
 overlay.classList.remove('active');
+// overlay.classList.toggle('active');
 
 // основное тело таблицы
 const tableBody = document.querySelector('.table__body');
