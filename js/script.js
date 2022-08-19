@@ -83,14 +83,38 @@ const modalTitle = modal.querySelector('.modal__title');
 const modalForm = modal.querySelector('.modal__form');
 const modalCheckbox = modal.querySelector('.modal__checkbox');
 const modalInputDiscount = modal.querySelector('.modal__input_discount');
+const modalClose = modal.querySelector('.modal__close');
+const addGoods = document.querySelector('.panel__add-goods');
+
 
 // закрыть overlay вместе с модальным окном
-overlay.classList.remove('active');
+// overlay.classList.remove('active');
 // overlay.classList.toggle('active');
+
+const closeModalOverlay = (overlay) => {
+  // закрывем модальное окно
+  overlay.classList.remove('active');
+};
+
+const openModalOverlay = (overlay) => {
+  // закрывем модальное окно
+  overlay.classList.add('active');
+};
+
+// closeModalOverlay(overlay);
+
+addGoods.addEventListener('click', (e) => {
+  openModalOverlay(overlay);
+});
+
+modalClose.addEventListener('click', (event) => {
+  closeModalOverlay(overlay);
+});
 
 // основное тело таблицы
 const tableBody = document.querySelector('.table__body');
 
+/*
 // ? ВОПСРОС как лучше генерировать ряд таблицы
 // ? с помощью innerHTML ??? или
 // function createRow вставка ряда с помощью html строки
@@ -119,12 +143,13 @@ const createRowHTML = (rowNumber,
   // </tr>
   return tr;
 };
-
+*/
+/*
 tableBody.append(createRowHTML('00', {
   id: 257144,
   title: 'Витая пара PROConnect 01-0043-3-25',
   price: 22,
-  description: `Витая пара Proconnect 01-0043-3-25 является сетевым кабелем 
+  description: `Витая пара Proconnect 01-0043-3-25 является сетевым кабелем
 с 4 парами проводов типа UTP, в качестве проводника в которых используется
 алюминий, плакированный медью CCA. Такая неэкранированная витая пара с
 одножильными проводами диаметром 0.50 мм широко применяется в процессе сетевых
@@ -140,6 +165,7 @@ tableBody.append(createRowHTML('00', {
     big: 'img/lan_proconnect43-3-25-b.jpg',
   },
 }));
+*/
 
 // функция создания элемента
 // взята из интенсива
