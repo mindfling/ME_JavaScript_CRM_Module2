@@ -87,10 +87,6 @@ const modalClose = modal.querySelector('.modal__close');
 const addGoods = document.querySelector('.panel__add-goods');
 
 
-// закрыть overlay вместе с модальным окном
-// overlay.classList.remove('active');
-// overlay.classList.toggle('active');
-
 const closeModalOverlay = (overlay) => {
   // закрывем модальное окно
   overlay.classList.remove('active');
@@ -101,10 +97,22 @@ const openModalOverlay = (overlay) => {
   overlay.classList.add('active');
 };
 
-// closeModalOverlay(overlay);
+// закрыть overlay вместе с модальным окном
+closeModalOverlay(overlay);
 
 addGoods.addEventListener('click', (e) => {
   openModalOverlay(overlay);
+});
+
+overlay.addEventListener('click', (e) => {
+  const target = e.target;
+  console.log('target: ', target);
+  if (target.closest('.modal')) {
+    console.log('target closest modal');
+    return;
+  }
+  console.log('overlay click');
+  closeModalOverlay(overlay);
 });
 
 modalClose.addEventListener('click', (event) => {
@@ -114,58 +122,6 @@ modalClose.addEventListener('click', (event) => {
 // основное тело таблицы
 const tableBody = document.querySelector('.table__body');
 
-/*
-// ? ВОПСРОС как лучше генерировать ряд таблицы
-// ? с помощью innerHTML ??? или
-// function createRow вставка ряда с помощью html строки
-const createRowHTML = (rowNumber,
-    {id, title, category, units, count, price},
-) => {
-  const tr = document.createElement('tr');
-  const euroSymb = '&#8364;'; // html символ евро
-  // <tr>
-  tr.innerHTML = `
-<td class="table__cell">${rowNumber}</td>
-<td class="table__cell table__cell_left table__cell_name" data-id="${id}">
-  <span class="table__cell-id">id: ${id}</span>
-  ${title}</td>
-<td class="table__cell table__cell_left">${category}</td>
-<td class="table__cell">${units}</td>
-<td class="table__cell">${count}</td>
-<td class="table__cell">${euroSymb} ${price}</td>
-<td class="table__cell">${euroSymb} ${count * price}</td>
-<td class="table__cell table__cell_btn-wrapper">
-  <button class="table__btn table__btn_pic" title="Картинка"></button>
-  <button class="table__btn table__btn_edit" title="Редактировать"></button>
-  <button class="table__btn table__btn_del" title="Удалить"></button>
-</td>
-`;
-  // </tr>
-  return tr;
-};
-*/
-/*
-tableBody.append(createRowHTML('00', {
-  id: 257144,
-  title: 'Витая пара PROConnect 01-0043-3-25',
-  price: 22,
-  description: `Витая пара Proconnect 01-0043-3-25 является сетевым кабелем
-с 4 парами проводов типа UTP, в качестве проводника в которых используется
-алюминий, плакированный медью CCA. Такая неэкранированная витая пара с
-одножильными проводами диаметром 0.50 мм широко применяется в процессе сетевых
-монтажных работ. С ее помощью вы сможете обеспечить развертывание локальной
-сети в домашних условиях или на предприятии, объединить все необходимое вам
-оборудование в единую сеть.`,
-  category: 'cables',
-  discont: false,
-  count: 420,
-  units: 'Volts',
-  images: {
-    small: 'img/lan_proconnect43-3-25.jpg',
-    big: 'img/lan_proconnect43-3-25-b.jpg',
-  },
-}));
-*/
 
 // функция создания элемента
 // взята из интенсива
@@ -178,8 +134,7 @@ const createElem = (tag, attr = {}, text) => {
   return elem;
 };
 
-// ? ВОПРОС возможно лучше генерировать
-// ? строку таблицы динамически с помощью createElement
+// ? ВОПРОС возможно лучше генерировать строку динамически
 // function createRow возвращает динамически созданый ряд row
 const createRow = (
     rowNumber, {
