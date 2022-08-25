@@ -87,18 +87,15 @@ const modalClose = modal.querySelector('.modal__close');
 const addGoods = document.querySelector('.panel__add-goods');
 
 
+// закрывем модальное окно
 const closeModalOverlay = (overlay) => {
-  // закрывем модальное окно
   overlay.classList.remove('active');
 };
 
+// закрывем модальное окно
 const openModalOverlay = (overlay) => {
-  // закрывем модальное окно
   overlay.classList.add('active');
 };
-
-// закрыть overlay вместе с модальным окном
-closeModalOverlay(overlay);
 
 addGoods.addEventListener('click', (e) => {
   openModalOverlay(overlay);
@@ -106,15 +103,17 @@ addGoods.addEventListener('click', (e) => {
 
 overlay.addEventListener('click', (e) => {
   const target = e.target;
-  console.log('target: ', target);
+
   if (target.closest('.modal')) {
+    // отрабатывем клик по модальному окну
     console.log('target closest modal');
     return;
   }
-  console.log('overlay click');
+  // закрываем модалку при клике мимо окна
   closeModalOverlay(overlay);
 });
 
+// отдельный клик по кнопке закрыть окно
 modalClose.addEventListener('click', (event) => {
   closeModalOverlay(overlay);
 });
@@ -134,8 +133,7 @@ const createElem = (tag, attr = {}, text) => {
   return elem;
 };
 
-// ? ВОПРОС возможно лучше генерировать строку динамически
-// function createRow возвращает динамически созданый ряд row
+// createRow возвращает динамически созданый ряд row
 const createRow = (
     rowNumber, {
       id,
@@ -228,7 +226,7 @@ const createRow = (
   return row;
 };
 
-// function renderGoods перебирает массив объектов товаров и рендерит строки
+// renderGoods перебирает массив объектов товаров и рендерит строки
 const renderGoods = (products = []) => {
   // перебираем массив объектов
   if (Array.isArray(products)) {
@@ -249,5 +247,10 @@ const renderGoods = (products = []) => {
   return;
 };
 
-// рендерим таблицу товаров
+
+
+// в самом начале закрыть overlay вместе с модальным окном
+closeModalOverlay(overlay);
+
+// в начале рендерим отрисовываем таблицу товаров
 renderGoods(data);
