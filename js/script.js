@@ -76,7 +76,9 @@ const data = [
 
 // модальное окно с оверлеем
 const overlay = document.querySelector('.overlay');
-const modal = overlay.querySelector('.overlay__modal');
+console.log('overlay: ', overlay);
+const modal = overlay.querySelector('.modal');
+console.log('modal: ', modal);
 
 // Заголовок, Форма, Чекбокс, Поле рябом с чекбоксом Скидка
 const modalTitle = modal.querySelector('.modal__title');
@@ -86,40 +88,51 @@ const modalInputDiscount = modal.querySelector('.modal__input_discount');
 const modalClose = modal.querySelector('.modal__close');
 const addGoods = document.querySelector('.panel__add-goods');
 
+// основное тело таблицы
+const tableBody = document.querySelector('.table__body');
 
-// закрывем модальное окно
-const closeModalOverlay = (overlay) => {
-  overlay.classList.remove('active');
-};
 
 // закрывем модальное окно
 const openModalOverlay = (overlay) => {
   overlay.classList.add('active');
+  console.log('Open Modal');
 };
 
+// закрывем модальное окно
+const closeModalOverlay = (overlay) => {
+  overlay.classList.remove('active');
+  console.log('Close Modal');
+};
+
+
+// * клик по кнопке Добавить Товар
 addGoods.addEventListener('click', (e) => {
   openModalOverlay(overlay);
 });
 
+
+// * обработчик на оверлей
 overlay.addEventListener('click', (e) => {
   const target = e.target;
 
+  if (target.closest('.modal__close')) {
+    // клик по кнопе .modal__close
+    closeModalOverlay(overlay);
+    return;
+  }
+
   if (target.closest('.modal')) {
     // отрабатывем клик по модальному окну
-    console.log('target closest modal');
     return;
   }
   // закрываем модалку при клике мимо окна
   closeModalOverlay(overlay);
 });
 
-// отдельный клик по кнопке закрыть окно
-modalClose.addEventListener('click', (event) => {
-  closeModalOverlay(overlay);
-});
-
-// основное тело таблицы
-const tableBody = document.querySelector('.table__body');
+// * todo отдельный клик по кнопке закрыть окно
+// modalClose.addEventListener('click', (event) => {
+//   closeModalOverlay(overlay);
+// });
 
 
 // функция создания элемента
@@ -248,7 +261,7 @@ const renderGoods = (products = []) => {
 };
 
 
-
+// * INIT * //
 // в самом начале закрыть overlay вместе с модальным окном
 closeModalOverlay(overlay);
 
