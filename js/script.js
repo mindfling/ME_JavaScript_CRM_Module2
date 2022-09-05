@@ -82,14 +82,21 @@ console.log('modal: ', modal);
 
 // Заголовок, Форма, Чекбокс, Поле рябом с чекбоксом Скидка
 const modalTitle = modal.querySelector('.modal__title');
+console.log('modalTitle: ', modalTitle);
 const modalForm = modal.querySelector('.modal__form');
+console.log('modalForm: ', modalForm);
 const modalCheckbox = modal.querySelector('.modal__checkbox');
+console.log('modalCheckbox: ', modalCheckbox);
 const modalInputDiscount = modal.querySelector('.modal__input_discount');
+console.log('modalInputDiscount: ', modalInputDiscount);
 const modalClose = modal.querySelector('.modal__close');
+console.log('modalClose: ', modalClose);
 const addGoods = document.querySelector('.panel__add-goods');
+console.log('addGoods: ', addGoods);
 
 // основное тело таблицы
 const tableBody = document.querySelector('.table__body');
+console.log('tableBody: ', tableBody);
 
 
 // закрывем модальное окно
@@ -129,6 +136,31 @@ overlay.addEventListener('click', (e) => {
   closeModalOverlay(overlay);
 });
 
+// * обработчик для кнопок товаров
+tableBody.addEventListener('click', (e) => {
+  const target = e.target;
+  // console.log('target: ', target);
+  if (target.classList.contains('table__btn_pic')) {
+    console.log('Добавить картинку');
+    return;
+  }
+  if (target.classList.contains('table__btn_edit')) {
+    console.log('Редактировать товар');
+    return;
+  }
+  if (target.classList.contains('table__btn_del')) {
+    const targetProduct = target.closest('.product');
+    console.log('Удалить товар');
+    if (confirm('Удалить товар? ' + targetProduct.id)) {
+      console.log('Удаляем', targetProduct.id, targetProduct);
+      targetProduct.remove();
+      console.log('data: ', data);
+    }
+    return;
+  }
+});
+
+
 // * todo отдельный клик по кнопке закрыть окно
 // modalClose.addEventListener('click', (event) => {
 //   closeModalOverlay(overlay);
@@ -159,6 +191,8 @@ const createRow = (
   // генерируем динамически по элементам
   const euroSymb = '&#8364;';
   const row = createElem('tr');
+  row.id = id;
+  row.classList.add('product');
 
   const cellNumb = createElem(
     'td',
@@ -262,6 +296,32 @@ const renderGoods = (products = []) => {
 
 
 // * INIT * //
+/* * Returns a hash code from a string use it for hosh contocts
+* @param  {String} str The string to hash.
+* @return {Number}    A 32bit integer
+* @see http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
+*/
+const hashCode = (str) => {
+  let hash = 0;
+  for (let i = 0, len = str.length; i < len; i++) {
+    const chr = str.charCodeAt(i);
+    hash = (hash << 5) - hash + chr;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return Math.abs(hash);
+};
+
+// пересчитываем id hash у каждого товара
+data.forEach((product, index) => {
+  console.log('product: ', product);
+  const str = '' + index +
+      Object.values(product).reduce((accum, curr) => (accum + curr), '');
+  product.id = 'id' + hashCode(str);
+});
+
+// console.log('data: ', data);
+
+
 // в самом начале закрыть overlay вместе с модальным окном
 closeModalOverlay(overlay);
 
