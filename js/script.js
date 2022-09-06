@@ -73,39 +73,22 @@ const data = [
     },
   },
 ];
-console.log('data: ', data);
 
-// модальное окно с оверлеем
+const addGoods = document.querySelector('.panel__add-goods');
+const tableBody = document.querySelector('.table__body');
 const overlay = document.querySelector('.overlay');
 const modal = overlay.querySelector('.modal');
-
-// Заголовок, Форма, Чекбокс, Поле рябом с чекбоксом Скидка
+const modalClose = modal.querySelector('.modal__close');
 const modalTitle = modal.querySelector('.modal__title');
 const modalForm = modal.querySelector('.modal__form');
 const modalCheckbox = modal.querySelector('.modal__checkbox');
 const modalInputDiscount = modal.querySelector('.modal__input_discount');
-const modalClose = modal.querySelector('.modal__close');
-const addGoods = document.querySelector('.panel__add-goods');
-
-// сюда рендерим строки товаров
-const tableBody = document.querySelector('.table__body');
-
-console.log('overlay: ', overlay);
-console.log('modal: ', modal);
-console.log('modalTitle: ', modalTitle);
-console.log('modalForm: ', modalForm);
-console.log('modalCheckbox: ', modalCheckbox);
-console.log('modalInputDiscount: ', modalInputDiscount);
-console.log('modalClose: ', modalClose);
-console.log('addGoods: ', addGoods);
-console.log('tableBody: ', tableBody);
 
 
 // * getDataContact
 const getDataProduct = (data, id) => {
   // filter фильтрует элементы выдает массив контактов с данным id
   const product = data.filter(product => (product.id === id));
-  console.log('product: ', product);
   return product[0];
 };
 
@@ -130,7 +113,7 @@ const hashCode = (str) => {
   return Math.abs(hash);
 };
 
-// todo func makeDataIdHash
+// функция makeDataIdHash генерирует и добавляет хэши
 const makeDataIdHash = (data) => {
   data.forEach((product, index) => {
     const str = '' + index +
@@ -183,10 +166,10 @@ tableBody.addEventListener('click', (e) => {
     return;
   }
 
-  // todo Клик по кнопке Удалить товар
   if (target.classList.contains('table__btn_del')) {
     const targetProduct = target.closest('.product');
     const productID = targetProduct?.id;
+    console.log('кнопка Удалить товар');
 
     if (confirm(`
 Удалить товар?
@@ -206,7 +189,7 @@ tableBody.addEventListener('click', (e) => {
   }
 });
 
-// * функция создания элемента
+// функция создания элемента
 // взята из интенсива
 const createElem = (tag, attr = {}, text) => {
   const elem = document.createElement(tag);
