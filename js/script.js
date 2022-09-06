@@ -130,6 +130,17 @@ const hashCode = (str) => {
   return Math.abs(hash);
 };
 
+// todo func makeDataIdHash
+const makeDataIdHash = (data) => {
+  data.forEach((product, index) => {
+    const str = '' + index +
+    Object.values(product).reduce((accum, curr) => (accum + curr), '');
+    // product.id = 'id' + hashCode(str);
+    product.id = hashCode(str).toString();
+  });
+  return;
+};
+
 // * закрывем модальное окно
 const openModalOverlay = (overlay) => {
   overlay.classList.add('active');
@@ -177,7 +188,10 @@ tableBody.addEventListener('click', (e) => {
     const targetProduct = target.closest('.product');
     const productID = targetProduct?.id;
 
-    if (confirm('Удалить товар? ' + 'ID' + targetProduct.id)) {
+    if (confirm(`
+Удалить товар?
+  ID ${productID} 
+  ${getDataProduct(data, productID).title}`)) {
       console.log('Удаляем товар');
       // удаляем product из массива data
       deteleDataProduct(data, productID);
@@ -186,19 +200,13 @@ tableBody.addEventListener('click', (e) => {
       // выводим в консоль все что осталось
       console.log('data: ', data);
     } else {
-      console.log('Товар не удален');
+      console.log('Отмена!\nТовар не удален');
     }
     return;
   }
 });
 
-// * todo отдельный клик по кнопке закрыть окно
-// modalClose.addEventListener('click', (event) => {
-//   closeModalOverlay(overlay);
-// });
-
-
-// функция создания элемента
+// * функция создания элемента
 // взята из интенсива
 const createElem = (tag, attr = {}, text) => {
   const elem = document.createElement(tag);
@@ -327,18 +335,8 @@ const renderGoods = (products = []) => {
 
 
 // * INIT * //
-
-
 // пересчитываем id hash у каждого товара
-data.forEach((product, index) => {
-  const str = '' + index +
-      Object.values(product).reduce((accum, curr) => (accum + curr), '');
-  // product.id = 'id' + hashCode(str);
-  product.id = hashCode(str).toString();
-});
-
-console.log('data: ', data);
-
+makeDataIdHash(data);
 
 // в самом начале закрыть overlay вместе с модальным окном
 closeModalOverlay(overlay);
