@@ -75,30 +75,29 @@ const data = [
 ];
 console.log('data: ', data);
 
+const addGoods = document.querySelector('.panel__add-goods');
+// сюда рендерим строки товаров
+const tableBody = document.querySelector('.table__body');
 // модальное окно с оверлеем
 const overlay = document.querySelector('.overlay');
 const modal = overlay.querySelector('.modal');
-
 // Заголовок, Форма, Чекбокс, Поле рябом с чекбоксом Скидка
 const modalTitle = modal.querySelector('.modal__title');
 const modalForm = modal.querySelector('.modal__form');
 const modalCheckbox = modal.querySelector('.modal__checkbox');
 const modalInputDiscount = modal.querySelector('.modal__input_discount');
 const modalClose = modal.querySelector('.modal__close');
-const addGoods = document.querySelector('.panel__add-goods');
 
-// сюда рендерим строки товаров
-const tableBody = document.querySelector('.table__body');
 
-console.log('overlay: ', overlay);
-console.log('modal: ', modal);
-console.log('modalTitle: ', modalTitle);
-console.log('modalForm: ', modalForm);
-console.log('modalCheckbox: ', modalCheckbox);
-console.log('modalInputDiscount: ', modalInputDiscount);
-console.log('modalClose: ', modalClose);
-console.log('addGoods: ', addGoods);
-console.log('tableBody: ', tableBody);
+// console.log('overlay: ', overlay);
+// console.log('modal: ', modal);
+// console.log('modalTitle: ', modalTitle);
+// console.log('modalForm: ', modalForm);
+// console.log('modalCheckbox: ', modalCheckbox);
+// console.log('modalInputDiscount: ', modalInputDiscount);
+// console.log('modalClose: ', modalClose);
+// console.log('addGoods: ', addGoods);
+// console.log('tableBody: ', tableBody);
 
 
 // * getDataContact
@@ -162,7 +161,7 @@ addGoods.addEventListener('click', (e) => {
 overlay.addEventListener('click', (e) => {
   const target = e.target;
   if (target.closest('.modal') && !target.closest('.modal__close')) {
-    console.log('close it');
+    console.log('form click it');
     return;
   }
   // закрываем модалку при клике мимо окна
@@ -204,6 +203,11 @@ tableBody.addEventListener('click', (e) => {
     }
     return;
   }
+});
+
+// ставим чекбокс
+modalCheckbox.addEventListener('change', e => {
+  console.log('checked', e.target);
 });
 
 // * функция создания элемента
