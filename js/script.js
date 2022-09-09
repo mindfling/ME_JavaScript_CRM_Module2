@@ -82,25 +82,48 @@ const tableBody = document.querySelector('.table__body');
 const overlay = document.querySelector('.overlay');
 const modal = overlay.querySelector('.modal');
 // Заголовок, Форма, Чекбокс, Поле рябом с чекбоксом Скидка
-const modalTitle = modal.querySelector('.modal__title');
-const modalForm = modal.querySelector('.modal__form');
-const modalCheckbox = modal.querySelector('.modal__checkbox');
-const modalInputDiscount = modal.querySelector('.modal__input_discount');
 const modalClose = modal.querySelector('.modal__close');
+const modalTitle = modal.querySelector('.modal__title');
+console.log('modalClose: ', modalClose);
+console.log('modalTitle: ', modalTitle);
+
+// const modalForm = modal.querySelector('.modal__form');
+// const modalCheckbox = modal.querySelector('.modal__checkbox');
+// const modalInputDiscount = modal.querySelector('.modal__input_discount');
+const forms = document.forms;
+console.log('forms: 0', forms[0]); // search form
+console.log('forms: 1', forms[1]); // main modal form
 
 
-// console.log('overlay: ', overlay);
-// console.log('modal: ', modal);
-// console.log('modalTitle: ', modalTitle);
-// console.log('modalForm: ', modalForm);
-// console.log('modalCheckbox: ', modalCheckbox);
-// console.log('modalInputDiscount: ', modalInputDiscount);
-// console.log('modalClose: ', modalClose);
-// console.log('addGoods: ', addGoods);
-// console.log('tableBody: ', tableBody);
+const modalForm = document.forms.main; // main modal form
+console.log('modalForm: ', modalForm);
+
+const modalFormName = modalForm.elements.name;
+console.log('modalFormName: ', modalFormName);
+
+const modalFormCategory = modalForm.elements.category;
+console.log('modalFormCategory: ', modalFormCategory);
+
+const modalFormTextareaDescription = modalForm.elements.description;
+console.log('modalFormTextareaDescription: ', modalFormTextareaDescription);
+
+const modalFormUnits = modalForm.elements.units;
+console.log('modalFormUnits: ', modalFormUnits);
 
 
-// * getDataContact
+const modalFromCheckboxDiscount = modalForm.elements.discount;
+console.log('modalFromCheckboxDiscount: ', modalFromCheckboxDiscount);
+const modalFormInputDiscountCount = modalForm.elements.discount_count;
+console.log('modalFormInputDiscountCount: ', modalFormInputDiscountCount);
+
+
+const modalFormPrice = modalForm.elements.price;
+console.log('modalFormPrice: ', modalFormPrice);
+
+const modalFormImage = modalForm.elements.image;
+console.log('modalFormImage: ', modalFormImage);
+
+
 const getDataProduct = (data, id) => {
   // filter фильтрует элементы выдает массив контактов с данным id
   const product = data.filter(product => (product.id === id));
@@ -108,7 +131,6 @@ const getDataProduct = (data, id) => {
   return product[0];
 };
 
-// * deteleDataContact
 const deteleDataProduct = (data, id) => {
   // удалить этот элем из массива
   data.forEach((product, index) => {
@@ -205,10 +227,18 @@ tableBody.addEventListener('click', (e) => {
   }
 });
 
-// ставим чекбокс
-modalCheckbox.addEventListener('change', e => {
-  console.log('checked', e.target);
+// * ставим чекбокс дискаунт
+modalFromCheckboxDiscount.addEventListener('change', e => {
+  const disabled = modalFormInputDiscountCount.disabled;
+  if (disabled) {
+    modalFormInputDiscountCount.disabled = false;
+    console.log('Активирован дискаунт');
+  } else {
+    modalFormInputDiscountCount.disabled = true;
+    console.log('Дискаунт отключен');
+  }
 });
+
 
 // * функция создания элемента
 // взята из интенсива
