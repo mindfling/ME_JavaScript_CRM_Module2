@@ -92,43 +92,36 @@ const modalControl = () => {
   const modalTitle = modal.querySelector('.modal__title');
 
   // * закрывем модальное окно
-  const openModalOverlay = (overlay) => {
+  const openModal = (overlay) => {
     overlay.classList.add('active');
     console.log('Open Modal');
   };
 
   // * клик по кнопке Добавить Товар
   addGoods.addEventListener('click', (e) => {
-    openModalOverlay(overlay);
+    openModal(overlay);
   });
 
-  const modalForm = document.forms.main; // main modal form
-  console.log('modalForm: ', modalForm);
+  const form = document.forms.main; // main modal form
 
-  const modalFormName = modalForm.elements.name;
-  console.log('modalFormName: ', modalFormName);
+  const productName = form.elements.name;
+  const category = form.elements.category;
+  const description = form.elements.description;
+  const units = form.elements.units;
+  const checkboxDiscount = form.elements.discount;
+  const modalFormInputDiscountCount = form.elements.discount_count;
+  const price = form.elements.price;
+  const productImage = form.elements.image;
 
-  const modalFormCategory = modalForm.elements.category;
-  console.log('modalFormCategory: ', modalFormCategory);
-
-  const modalFormTextareaDescription = modalForm.elements.description;
-  console.log('modalFormTextareaDescription: ', modalFormTextareaDescription);
-
-  const modalFormUnits = modalForm.elements.units;
-  console.log('modalFormUnits: ', modalFormUnits);
-
-
-  const modalFromCheckboxDiscount = modalForm.elements.discount;
-  console.log('modalFromCheckboxDiscount: ', modalFromCheckboxDiscount);
-  const modalFormInputDiscountCount = modalForm.elements.discount_count;
-  console.log('modalFormInputDiscountCount: ', modalFormInputDiscountCount);
-
-
-  const modalFormPrice = modalForm.elements.price;
-  console.log('modalFormPrice: ', modalFormPrice);
-
-  const modalFormImage = modalForm.elements.image;
-  console.log('modalFormImage: ', modalFormImage);
+  // console.log('form: ', form);
+  // console.log('productName: ', productName);
+  // console.log('category: ', category);
+  // console.log('description: ', description);
+  // console.log('units: ', units);
+  // console.log('checkboxDiscount: ', checkboxDiscount);
+  // console.log('modalFormInputDiscountCount: ', modalFormInputDiscountCount);
+  // console.log('price: ', price);
+  // console.log('productImage: ', productImage);
 
   // * закрывем модальное окно
   const closeModal = (overlay) => {
@@ -136,19 +129,43 @@ const modalControl = () => {
     console.log('Close Modal');
   };
 
-  // * обработчик на оверлей
-  overlay.addEventListener('click', (e) => {
-    const target = e.target;
-    if (target.closest('.modal') && !target.closest('.modal__close')) {
-      console.log('form click it');
-      return;
-    }
-    // закрываем модалку при клике мимо окна
+  // * обработка формы
+  form.addEventListener('submit', e => {
+    console.log('form submit');
+    e.preventDefault();
+    const formData = new FormData(form);
+    const newProduct = Object.fromEntries(formData);
+    console.log('formData: ', formData);
+    console.log('newProduct: ', newProduct);
+    // addProductData();
+    // addProductPage();
+    form.reset();
     closeModal(overlay);
   });
 
+
+  // * обработчик на оверлей
+  overlay.addEventListener('click', e => {
+    const target = e.target;
+    if (target === overlay ||
+        target.closest('.modal__close')) {
+      console.log('click to close modal');
+      closeModal(overlay);
+    }
+  });
+  // overlay.addEventListener('click', (e) => {
+  //   const target = e.target;
+  //   if (target.closest('.modal') && !target.closest('.modal__close')) {
+  //     console.log('form click it');
+  //     return;
+  //   }
+  //   // закрываем модалку при клике мимо окна
+  //   closeModal(overlay);
+  // });
+
+
   // * ставим чекбокс дискаунт
-  modalFromCheckboxDiscount.addEventListener('change', e => {
+  checkboxDiscount.addEventListener('change', e => {
     const disabled = modalFormInputDiscountCount.disabled;
     if (disabled) {
       modalFormInputDiscountCount.disabled = false;
@@ -164,37 +181,6 @@ const modalControl = () => {
 
   return;
 };
-
-
-// modalControl();
-
-// const modalForm = document.forms.main; // main modal form
-// console.log('modalForm: ', modalForm);
-
-// const modalFormName = modalForm.elements.name;
-// console.log('modalFormName: ', modalFormName);
-
-// const modalFormCategory = modalForm.elements.category;
-// console.log('modalFormCategory: ', modalFormCategory);
-
-// const modalFormTextareaDescription = modalForm.elements.description;
-// console.log('modalFormTextareaDescription: ', modalFormTextareaDescription);
-
-// const modalFormUnits = modalForm.elements.units;
-// console.log('modalFormUnits: ', modalFormUnits);
-
-
-// const modalFromCheckboxDiscount = modalForm.elements.discount;
-// console.log('modalFromCheckboxDiscount: ', modalFromCheckboxDiscount);
-// const modalFormInputDiscountCount = modalForm.elements.discount_count;
-// console.log('modalFormInputDiscountCount: ', modalFormInputDiscountCount);
-
-
-// const modalFormPrice = modalForm.elements.price;
-// console.log('modalFormPrice: ', modalFormPrice);
-
-// const modalFormImage = modalForm.elements.image;
-// console.log('modalFormImage: ', modalFormImage);
 
 
 const getDataProduct = (data, id) => {
@@ -224,12 +210,10 @@ const hashCode = (str) => {
   return Math.abs(hash);
 };
 
-// todo func makeDataIdHash
 const makeDataIdHash = (data) => {
   data.forEach((product, index) => {
     const str = '' + index +
     Object.values(product).reduce((accum, curr) => (accum + curr), '');
-    // product.id = 'id' + hashCode(str);
     product.id = hashCode(str).toString();
   });
   return;
@@ -250,7 +234,7 @@ tableBody.addEventListener('click', (e) => {
     return;
   }
 
-  // todo Клик по кнопке Удалить товар
+  // Клик по кнопке Удалить товар
   if (target.classList.contains('table__btn_del')) {
     const targetProduct = target.closest('.product');
     const productID = targetProduct?.id;
@@ -260,11 +244,8 @@ tableBody.addEventListener('click', (e) => {
   ID ${productID} 
   ${getDataProduct(data, productID).title}`)) {
       console.log('Удаляем товар');
-      // удаляем product из массива data
       deteleDataProduct(data, productID);
-      // удаляем DOM елемент ряд таблицы
       targetProduct.remove();
-      // выводим в консоль все что осталось
       console.log('data: ', data);
     } else {
       console.log('Отмена!\nТовар не удален');
@@ -284,6 +265,7 @@ const createElem = (tag, attr = {}, text) => {
   }
   return elem;
 };
+
 
 // * createRow возвращает динамически созданый ряд row
 const createRow = (
@@ -379,6 +361,7 @@ const createRow = (
 
   return row;
 };
+
 
 // * renderGoods перебирает массив объектов товаров и рендерит строки
 const renderGoods = (products = []) => {
