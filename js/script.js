@@ -1,5 +1,9 @@
 'use strict';
 
+// todo короткие имена form
+// todo mainFormControl()
+
+
 // данные списик объектов наших товаров
 const data = [
   {
@@ -76,52 +80,121 @@ const data = [
 console.log('data: ', data);
 
 const addGoods = document.querySelector('.panel__add-goods');
-// сюда рендерим строки товаров
 const tableBody = document.querySelector('.table__body');
-// модальное окно с оверлеем
-const overlay = document.querySelector('.overlay');
-const modal = overlay.querySelector('.modal');
-// Заголовок, Форма, Чекбокс, Поле рябом с чекбоксом Скидка
-const modalClose = modal.querySelector('.modal__close');
-const modalTitle = modal.querySelector('.modal__title');
-console.log('modalClose: ', modalClose);
-console.log('modalTitle: ', modalTitle);
-
-// const modalForm = modal.querySelector('.modal__form');
-// const modalCheckbox = modal.querySelector('.modal__checkbox');
-// const modalInputDiscount = modal.querySelector('.modal__input_discount');
-const forms = document.forms;
-console.log('forms: 0', forms[0]); // search form
-console.log('forms: 1', forms[1]); // main modal form
 
 
-const modalForm = document.forms.main; // main modal form
-console.log('modalForm: ', modalForm);
+const modalControl = () => {
+  // модальное окно с оверлеем
+  const overlay = document.querySelector('.overlay');
+  const modal = overlay.querySelector('.modal');
+  // Заголовок, Форма, Чекбокс, Поле рябом с чекбоксом Скидка
+  const modalClose = modal.querySelector('.modal__close');
+  const modalTitle = modal.querySelector('.modal__title');
 
-const modalFormName = modalForm.elements.name;
-console.log('modalFormName: ', modalFormName);
+  // * закрывем модальное окно
+  const openModalOverlay = (overlay) => {
+    overlay.classList.add('active');
+    console.log('Open Modal');
+  };
 
-const modalFormCategory = modalForm.elements.category;
-console.log('modalFormCategory: ', modalFormCategory);
+  // * клик по кнопке Добавить Товар
+  addGoods.addEventListener('click', (e) => {
+    openModalOverlay(overlay);
+  });
 
-const modalFormTextareaDescription = modalForm.elements.description;
-console.log('modalFormTextareaDescription: ', modalFormTextareaDescription);
+  const modalForm = document.forms.main; // main modal form
+  console.log('modalForm: ', modalForm);
 
-const modalFormUnits = modalForm.elements.units;
-console.log('modalFormUnits: ', modalFormUnits);
+  const modalFormName = modalForm.elements.name;
+  console.log('modalFormName: ', modalFormName);
+
+  const modalFormCategory = modalForm.elements.category;
+  console.log('modalFormCategory: ', modalFormCategory);
+
+  const modalFormTextareaDescription = modalForm.elements.description;
+  console.log('modalFormTextareaDescription: ', modalFormTextareaDescription);
+
+  const modalFormUnits = modalForm.elements.units;
+  console.log('modalFormUnits: ', modalFormUnits);
 
 
-const modalFromCheckboxDiscount = modalForm.elements.discount;
-console.log('modalFromCheckboxDiscount: ', modalFromCheckboxDiscount);
-const modalFormInputDiscountCount = modalForm.elements.discount_count;
-console.log('modalFormInputDiscountCount: ', modalFormInputDiscountCount);
+  const modalFromCheckboxDiscount = modalForm.elements.discount;
+  console.log('modalFromCheckboxDiscount: ', modalFromCheckboxDiscount);
+  const modalFormInputDiscountCount = modalForm.elements.discount_count;
+  console.log('modalFormInputDiscountCount: ', modalFormInputDiscountCount);
 
 
-const modalFormPrice = modalForm.elements.price;
-console.log('modalFormPrice: ', modalFormPrice);
+  const modalFormPrice = modalForm.elements.price;
+  console.log('modalFormPrice: ', modalFormPrice);
 
-const modalFormImage = modalForm.elements.image;
-console.log('modalFormImage: ', modalFormImage);
+  const modalFormImage = modalForm.elements.image;
+  console.log('modalFormImage: ', modalFormImage);
+
+  // * закрывем модальное окно
+  const closeModal = (overlay) => {
+    overlay.classList.remove('active');
+    console.log('Close Modal');
+  };
+
+  // * обработчик на оверлей
+  overlay.addEventListener('click', (e) => {
+    const target = e.target;
+    if (target.closest('.modal') && !target.closest('.modal__close')) {
+      console.log('form click it');
+      return;
+    }
+    // закрываем модалку при клике мимо окна
+    closeModal(overlay);
+  });
+
+  // * ставим чекбокс дискаунт
+  modalFromCheckboxDiscount.addEventListener('change', e => {
+    const disabled = modalFormInputDiscountCount.disabled;
+    if (disabled) {
+      modalFormInputDiscountCount.disabled = false;
+      console.log('Активирован дискаунт');
+    } else {
+      modalFormInputDiscountCount.disabled = true;
+      console.log('Дискаунт отключен');
+    }
+  });
+
+  // в самом начале закрыть overlay вместе с модальным окном
+  closeModal(overlay);
+
+  return;
+};
+
+
+// modalControl();
+
+// const modalForm = document.forms.main; // main modal form
+// console.log('modalForm: ', modalForm);
+
+// const modalFormName = modalForm.elements.name;
+// console.log('modalFormName: ', modalFormName);
+
+// const modalFormCategory = modalForm.elements.category;
+// console.log('modalFormCategory: ', modalFormCategory);
+
+// const modalFormTextareaDescription = modalForm.elements.description;
+// console.log('modalFormTextareaDescription: ', modalFormTextareaDescription);
+
+// const modalFormUnits = modalForm.elements.units;
+// console.log('modalFormUnits: ', modalFormUnits);
+
+
+// const modalFromCheckboxDiscount = modalForm.elements.discount;
+// console.log('modalFromCheckboxDiscount: ', modalFromCheckboxDiscount);
+// const modalFormInputDiscountCount = modalForm.elements.discount_count;
+// console.log('modalFormInputDiscountCount: ', modalFormInputDiscountCount);
+
+
+// const modalFormPrice = modalForm.elements.price;
+// console.log('modalFormPrice: ', modalFormPrice);
+
+// const modalFormImage = modalForm.elements.image;
+// console.log('modalFormImage: ', modalFormImage);
 
 
 const getDataProduct = (data, id) => {
@@ -162,33 +235,6 @@ const makeDataIdHash = (data) => {
   return;
 };
 
-// * закрывем модальное окно
-const openModalOverlay = (overlay) => {
-  overlay.classList.add('active');
-  console.log('Open Modal');
-};
-
-// * закрывем модальное окно
-const closeModalOverlay = (overlay) => {
-  overlay.classList.remove('active');
-  console.log('Close Modal');
-};
-
-// * клик по кнопке Добавить Товар
-addGoods.addEventListener('click', (e) => {
-  openModalOverlay(overlay);
-});
-
-// * обработчик на оверлей
-overlay.addEventListener('click', (e) => {
-  const target = e.target;
-  if (target.closest('.modal') && !target.closest('.modal__close')) {
-    console.log('form click it');
-    return;
-  }
-  // закрываем модалку при клике мимо окна
-  closeModalOverlay(overlay);
-});
 
 // * обработчик для кнопок товаров
 tableBody.addEventListener('click', (e) => {
@@ -224,18 +270,6 @@ tableBody.addEventListener('click', (e) => {
       console.log('Отмена!\nТовар не удален');
     }
     return;
-  }
-});
-
-// * ставим чекбокс дискаунт
-modalFromCheckboxDiscount.addEventListener('change', e => {
-  const disabled = modalFormInputDiscountCount.disabled;
-  if (disabled) {
-    modalFormInputDiscountCount.disabled = false;
-    console.log('Активирован дискаунт');
-  } else {
-    modalFormInputDiscountCount.disabled = true;
-    console.log('Дискаунт отключен');
   }
 });
 
@@ -372,8 +406,8 @@ const renderGoods = (products = []) => {
 // пересчитываем id hash у каждого товара
 makeDataIdHash(data);
 
-// в самом начале закрыть overlay вместе с модальным окном
-closeModalOverlay(overlay);
+// функционал работы с модальным окном и формой
+modalControl(data);
 
 // в начале рендерим отрисовываем таблицу товаров
 renderGoods(data);
