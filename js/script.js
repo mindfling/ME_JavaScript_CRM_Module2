@@ -9,7 +9,7 @@ const data = [
   {
     id: 1106515540,
     title: 'Смартфон Xiaomi 11T 8/128GB',
-    price: 27000,
+    price: 2700,
     description: 'Смартфон Xiaomi 11T – это представитель флагманской линейки' +
       ' выпущенной во второй половине 2021 года. И он полностью соответствует' +
       ' такому позиционированию, предоставляя своим обладателям возможность' +
@@ -42,7 +42,7 @@ const data = [
   {
     id: '333076611',
     title: 'ТВ приставка MECOOL KI',
-    price: 12400,
+    price: 1200,
     description: 'Всего лишь один шаг сделает ваш телевизор умным, ' +
       'Быстрый и умный MECOOL KI PRO, прекрасно спроектированный, сочетает ' +
       'в себе прочный процессор Cortex-A53 с чипом Amlogic S905D',
@@ -58,7 +58,7 @@ const data = [
   {
     id: 1352840121,
     title: 'Витая пара PROConnect 01-0043-3-25',
-    price: 22,
+    price: 2200,
     description: 'Витая пара Proconnect 01-0043-3-25 является сетевым кабелем' +
       ' с 4 парами проводов типа UTP, в качестве проводника в которых' +
       ' используется алюминий, плакированный медью CCA Такая неэкранированная' +
@@ -92,14 +92,6 @@ const zero = {
   id: '228808186',
 };
 
-const one = {
-  category: 'Категория',
-  description: 'Добавить товарДобавить товарДобавить товар',
-  id: 'ID2137452',
-  title: 'Новый товарррр',
-  units: 'eu',
-};
-
 
 const getRandomInt = (min, max) => {
   min = min < max ? min : max;
@@ -113,7 +105,27 @@ const getRandomInt = (min, max) => {
 // todo внутри modalControl()
 const addGoods = document.querySelector('.panel__add-goods');
 const tableBody = document.querySelector('.table__body');
+const totalPrice = document.querySelector('.crm__total-price');
+console.log('totalPrice: ', totalPrice);
 
+const getCountTotalPrice = (data) => {
+  let total = 0;
+  total = data.reduce((previousSumm, currentProduct) => {
+    console.log('previousSumm: ', previousSumm);
+    console.log('currentProduct: ', currentProduct);
+    console.log('currentProduct count: ', currentProduct.count);
+    return (previousSumm + currentProduct.count * currentProduct.price);
+  }, 0);
+  console.log('total: ', total);
+  return total;
+};
+
+const countTotalPrice = (data) => {
+  const total = getCountTotalPrice(data);
+  console.log('total в самом начале: ', total);
+  // todo сделать красиво
+  totalPrice.textContent = total + ' р';
+};
 
 
 const getDataProduct = (data, id) => {
@@ -208,7 +220,7 @@ const createRow = (
       id,
       title,
       category,
-      // description, // todo
+      description, // todo
       units,
       count,
       price,
@@ -320,31 +332,32 @@ const renderGoods = (products = []) => {
   return;
 };
 
-// * modalControl 
+
+// * modalControl
 const modalControl = () => {
   // модальное окно с оверлеем
+  // обработка событий окна и формы
+
   const overlay = document.querySelector('.overlay');
   const modal = overlay.querySelector('.modal');
-  // Заголовок, Форма, Чекбокс, Поле рябом с чекбоксом Скидка
+
   const vendorCodeID = modal.querySelector('.vendor-code__id');
   const modalClose = modal.querySelector('.modal__close');
   const modalTitle = modal.querySelector('.modal__title');
 
   const form = document.forms.main; // main modal form
-
   const productName = form.elements.name;
   const category = form.elements.category;
   const description = form.elements.description;
   const units = form.elements.units;
   const count = form.elements.count;
   const checkboxDiscount = form.elements.discount;
+  const discont = checkboxDiscount.checked;
   const discountCount = form.elements.discount_count;
   const price = form.elements.price;
   const productImage = form.elements.image;
 
-  const totalSumm = form.elements.total; // сумма out
-
-
+  
   const getVendorID = _ => {
     // todo randi or hash
     // const randomID = Math.floor(Math.random() * 1000000000);
@@ -353,12 +366,34 @@ const modalControl = () => {
     return 'ID' + randomID;
   };
 
+  let summ = 0;
+  const totalSumm = form.elements.total; // сумма out
+
+  const totalSummCount = () => {
+    // пересчитываем общую сумму
+    summ = parseInt(price.value) * parseInt(count.value);
+    if (checkboxDiscount.checked) {
+      summ -= summ * parseInt(discountCount.value) / 100;
+    }
+    totalSumm.value = 'Ru ' + summ;
+    return summ;
+  };
 
   // * открываем модальное окно
   const openModal = (overlay) => {
     overlay.classList.add('active');
     // * при открытии формы автоматически создаем ID товара
     vendorCodeID.textContent = getVendorID();
+    // * ставим некоторые поля в значения по умолчанию
+    checkboxDiscount.checked = true;
+    discountCount.disabled = false;
+    discountCount.value = 0;
+
+    count.value = 0;
+    price.value = 0;
+
+    // * общая сумма в окне
+    totalSummCount();
     console.log('Open Modal');
   };
 
@@ -375,7 +410,6 @@ const modalControl = () => {
     openModal(overlay);
   });
 
-  let summ = 0;
 
   // * обработчик расфокуса
   const blurHandler = e => {
@@ -386,11 +420,8 @@ const modalControl = () => {
         trgt === checkboxDiscount ||
         trgt === discountCount) {
       console.log('trgt: ', trgt);
-      summ = parseInt(price.value) * parseInt(count.value);
-      if (checkboxDiscount.checked) {
-        summ -= summ * parseInt(discountCount.value) / 100;
-      }
-      totalSumm.value = 'Ru ' + summ;
+      // totalSumm.value = 'Ru ' + summ;
+      totalSummCount();
     }
   };
 
@@ -410,12 +441,12 @@ const modalControl = () => {
     console.log('form submit');
 
     const formData = new FormData(form);
-    console.log('formData: ', formData);
-    console.log('formData Array: ', Array.from(formData));
-    console.log('formData entries: ', formData.entries());
-    console.log('formData entries: ', [...formData.entries()]);
-    console.log('formData keys: ', [...formData.keys()]);
-    console.log('formData values: ', [...formData.values()]);
+    // console.log('formData: ', formData);
+    // console.log('formData Array: ', Array.from(formData));
+    // console.log('formData entries: ', formData.entries());
+    // console.log('formData entries: ', [...formData.entries()]);
+    // console.log('formData keys: ', [...formData.keys()]);
+    // console.log('formData values: ', [...formData.values()]);
 
     const product = Object.fromEntries(formData);
     console.log('product: ', product);
@@ -439,7 +470,7 @@ const modalControl = () => {
     // tableBody.append(createRow(125, {
     // }));
     tableBody.append(createRow(125, newProduct));
-
+    countTotalPrice(data);
     form.reset();
     closeModal(overlay);
   });
@@ -461,19 +492,17 @@ const modalControl = () => {
     const disabled = discountCount.disabled;
     if (disabled) {
       discountCount.disabled = false;
+      discountCount.value = 0;
       console.log('Активирован дискаунт');
-      // discountCount.value = 124000;
     } else {
       discountCount.disabled = true;
-      console.log('Дискаунт отключен');
       discountCount.value = '';
+      console.log('Дискаунт отключен');
     }
   });
 
   // в самом начале закрыть overlay вместе с модальным окном
   closeModal(overlay);
-
-  return;
 };
 
 
@@ -486,3 +515,6 @@ modalControl(data);
 
 // в начале рендерим отрисовываем таблицу товаров
 renderGoods(data);
+
+// расчет полной суммы вверху таблицы ??? как лучше ???
+countTotalPrice(data);
