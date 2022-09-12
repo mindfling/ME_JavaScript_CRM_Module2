@@ -77,110 +77,43 @@ const data = [
     },
   },
 ];
-console.log('data: ', data);
 
+const zero = {
+  category: 'mobile-phone',
+  count: 3,
+  description: `Смартфон Xiaomi 11T – это 
+      представитель флагманской линейки выпущенной во второй 
+      половине 2021 года. И он полностью соответствует такому 
+      позиционированию, предоставляя своим обладателям возможность 
+      пользоваться отличными камерами, ни в чем себя не ограничивать 
+      при запуске игр
+      и других требовательных приложений.`,
+  discont: false,
+  id: '228808186',
+};
+
+const one = {
+  category: 'Категория',
+  description: 'Добавить товарДобавить товарДобавить товар',
+  id: 'ID2137452',
+  title: 'Новый товарррр',
+  units: 'eu',
+};
+
+
+const getRandomInt = (min, max) => {
+  min = min < max ? min : max;
+  max = min > max ? min : max;
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
+
+// todo внутри modalControl()
 const addGoods = document.querySelector('.panel__add-goods');
 const tableBody = document.querySelector('.table__body');
 
-
-const modalControl = () => {
-  // модальное окно с оверлеем
-  const overlay = document.querySelector('.overlay');
-  const modal = overlay.querySelector('.modal');
-  // Заголовок, Форма, Чекбокс, Поле рябом с чекбоксом Скидка
-  const modalClose = modal.querySelector('.modal__close');
-  const modalTitle = modal.querySelector('.modal__title');
-
-  // * закрывем модальное окно
-  const openModal = (overlay) => {
-    overlay.classList.add('active');
-    console.log('Open Modal');
-  };
-
-  // * клик по кнопке Добавить Товар
-  addGoods.addEventListener('click', (e) => {
-    openModal(overlay);
-  });
-
-  const form = document.forms.main; // main modal form
-
-  const productName = form.elements.name;
-  const category = form.elements.category;
-  const description = form.elements.description;
-  const units = form.elements.units;
-  const checkboxDiscount = form.elements.discount;
-  const modalFormInputDiscountCount = form.elements.discount_count;
-  const price = form.elements.price;
-  const productImage = form.elements.image;
-
-  // console.log('form: ', form);
-  // console.log('productName: ', productName);
-  // console.log('category: ', category);
-  // console.log('description: ', description);
-  // console.log('units: ', units);
-  // console.log('checkboxDiscount: ', checkboxDiscount);
-  // console.log('modalFormInputDiscountCount: ', modalFormInputDiscountCount);
-  // console.log('price: ', price);
-  // console.log('productImage: ', productImage);
-
-  // * закрывем модальное окно
-  const closeModal = (overlay) => {
-    overlay.classList.remove('active');
-    console.log('Close Modal');
-  };
-
-  // * обработка формы
-  form.addEventListener('submit', e => {
-    console.log('form submit');
-    e.preventDefault();
-    const formData = new FormData(form);
-    const newProduct = Object.fromEntries(formData);
-    console.log('formData: ', formData);
-    console.log('newProduct: ', newProduct);
-    // addProductData();
-    // addProductPage();
-    form.reset();
-    closeModal(overlay);
-  });
-
-
-  // * обработчик на оверлей
-  overlay.addEventListener('click', e => {
-    const target = e.target;
-    if (target === overlay ||
-        target.closest('.modal__close')) {
-      console.log('click to close modal');
-      closeModal(overlay);
-    }
-  });
-  // overlay.addEventListener('click', (e) => {
-  //   const target = e.target;
-  //   if (target.closest('.modal') && !target.closest('.modal__close')) {
-  //     console.log('form click it');
-  //     return;
-  //   }
-  //   // закрываем модалку при клике мимо окна
-  //   closeModal(overlay);
-  // });
-
-
-  // * ставим чекбокс дискаунт
-  checkboxDiscount.addEventListener('change', e => {
-    const disabled = modalFormInputDiscountCount.disabled;
-    if (disabled) {
-      modalFormInputDiscountCount.disabled = false;
-      console.log('Активирован дискаунт');
-    } else {
-      modalFormInputDiscountCount.disabled = true;
-      console.log('Дискаунт отключен');
-    }
-  });
-
-  // в самом начале закрыть overlay вместе с модальным окном
-  closeModal(overlay);
-
-  return;
-};
 
 
 const getDataProduct = (data, id) => {
@@ -189,6 +122,7 @@ const getDataProduct = (data, id) => {
   console.log('product: ', product);
   return product[0];
 };
+
 
 const deteleDataProduct = (data, id) => {
   // удалить этот элем из массива
@@ -209,6 +143,7 @@ const hashCode = (str) => {
   }
   return Math.abs(hash);
 };
+
 
 const makeDataIdHash = (data) => {
   data.forEach((product, index) => {
@@ -273,6 +208,7 @@ const createRow = (
       id,
       title,
       category,
+      // description, // todo
       units,
       count,
       price,
@@ -280,7 +216,7 @@ const createRow = (
   // генерируем динамически по элементам
   const euroSymb = '&#8364;';
   const row = createElem('tr');
-  row.id = id;
+  row.id = 'id' + id;
   row.classList.add('product');
 
   const cellNumb = createElem(
@@ -381,6 +317,162 @@ const renderGoods = (products = []) => {
       );
     });
   }
+  return;
+};
+
+// * modalControl 
+const modalControl = () => {
+  // модальное окно с оверлеем
+  const overlay = document.querySelector('.overlay');
+  const modal = overlay.querySelector('.modal');
+  // Заголовок, Форма, Чекбокс, Поле рябом с чекбоксом Скидка
+  const vendorCodeID = modal.querySelector('.vendor-code__id');
+  const modalClose = modal.querySelector('.modal__close');
+  const modalTitle = modal.querySelector('.modal__title');
+
+  const form = document.forms.main; // main modal form
+
+  const productName = form.elements.name;
+  const category = form.elements.category;
+  const description = form.elements.description;
+  const units = form.elements.units;
+  const count = form.elements.count;
+  const checkboxDiscount = form.elements.discount;
+  const discountCount = form.elements.discount_count;
+  const price = form.elements.price;
+  const productImage = form.elements.image;
+
+  const totalSumm = form.elements.total; // сумма out
+
+
+  const getVendorID = _ => {
+    // todo randi or hash
+    // const randomID = Math.floor(Math.random() * 1000000000);
+    const randomID = getRandomInt(1000000, 9999999);
+    console.log('ID' + randomID); // todo
+    return 'ID' + randomID;
+  };
+
+
+  // * открываем модальное окно
+  const openModal = (overlay) => {
+    overlay.classList.add('active');
+    // * при открытии формы автоматически создаем ID товара
+    vendorCodeID.textContent = getVendorID();
+    console.log('Open Modal');
+  };
+
+  // * закрываем модальное окно
+  const closeModal = (overlay) => {
+    overlay.classList.remove('active');
+    // При открытии модального окна должен генерироваться случайный id
+    // и заполняться span с классом vendor-code__id
+    console.log('Close Modal');
+  };
+
+  // * клик по кнопке Добавить Товар
+  addGoods.addEventListener('click', (e) => {
+    openModal(overlay);
+  });
+
+  let summ = 0;
+
+  // * обработчик расфокуса
+  const blurHandler = e => {
+    const trgt = e.target;
+    const val = trgt.value;
+    if (trgt === count ||
+        trgt === price ||
+        trgt === checkboxDiscount ||
+        trgt === discountCount) {
+      console.log('trgt: ', trgt);
+      summ = parseInt(price.value) * parseInt(count.value);
+      if (checkboxDiscount.checked) {
+        summ -= summ * parseInt(discountCount.value) / 100;
+      }
+      totalSumm.value = 'Ru ' + summ;
+    }
+  };
+
+  // * событие теряет фокус
+  productName.addEventListener('blur', blurHandler);
+  category.addEventListener('blur', blurHandler);
+  description.addEventListener('blur', blurHandler);
+  units.addEventListener('blur', blurHandler);
+  count.addEventListener('blur', blurHandler);
+  discountCount.addEventListener('blur', blurHandler);
+  price.addEventListener('blur', blurHandler);
+
+
+  // * обработка формы SUBMIT
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    console.log('form submit');
+
+    const formData = new FormData(form);
+    console.log('formData: ', formData);
+    console.log('formData Array: ', Array.from(formData));
+    console.log('formData entries: ', formData.entries());
+    console.log('formData entries: ', [...formData.entries()]);
+    console.log('formData keys: ', [...formData.keys()]);
+    console.log('formData values: ', [...formData.values()]);
+
+    const product = Object.fromEntries(formData);
+    console.log('product: ', product);
+
+    const newProduct = {
+      id: vendorCodeID.textContent, // todo
+      title: product.name,
+      category: product.category,
+      description: product.description,
+      units: product.units,
+      price: product.price,
+      count: product.count,
+      summ,
+    };
+
+    // * addProductData();
+    data.push(newProduct);
+    console.log('data: ', data);
+
+    // * addProductPage();
+    // tableBody.append(createRow(125, {
+    // }));
+    tableBody.append(createRow(125, newProduct));
+
+    form.reset();
+    closeModal(overlay);
+  });
+
+
+  // * обработчик на оверлей
+  overlay.addEventListener('click', e => {
+    const target = e.target;
+    if (target === overlay ||
+        target.closest('.modal__close')) {
+      console.log('click to close modal');
+      closeModal(overlay);
+    }
+  });
+
+
+  // * ставим чекбокс дискаунт
+  checkboxDiscount.addEventListener('change', e => {
+    const disabled = discountCount.disabled;
+    if (disabled) {
+      discountCount.disabled = false;
+      console.log('Активирован дискаунт');
+      // discountCount.value = 124000;
+    } else {
+      discountCount.disabled = true;
+      console.log('Дискаунт отключен');
+      discountCount.value = '';
+    }
+  });
+
+  // в самом начале закрыть overlay вместе с модальным окном
+  closeModal(overlay);
+
   return;
 };
 
