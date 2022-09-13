@@ -1,15 +1,27 @@
 'use strict';
 
-// todo короткие имена form
-// todo mainFormControl()
-
 
 // данные списик объектов наших товаров
 const data = [
   {
+    id: 11065,
+    title: 'Смартфон RedME 15M 64GB',
+    price: 100,
+    description: 'представитель флагманской линейки выпущенной во второй',
+    category: 'Смартфон',
+    discont: true,
+    discontPercent: 25,
+    count: 1,
+    units: 'шт',
+    images: {
+      small: 'img/smrtxiaomi11t-m.jpg',
+      big: 'img/smrtxiaomi11t-b.jpg',
+    },
+  },
+  {
     id: 1106515540,
     title: 'Смартфон Xiaomi 11T 8/128GB',
-    price: 2700,
+    price: 150,
     description: 'Смартфон Xiaomi 11T – это представитель флагманской линейки' +
       ' выпущенной во второй половине 2021 года. И он полностью соответствует' +
       ' такому позиционированию, предоставляя своим обладателям возможность' +
@@ -27,7 +39,7 @@ const data = [
   {
     id: 'ID1472328480',
     title: 'Радиоуправляемый автомобиль Cheetan',
-    price: 4000,
+    price: 400,
     description: `Внедорожник на дистанционном управлении. 
     Скорость 25км/ч. Возраст 7 - 14 лет`,
     category: 'toys',
@@ -42,7 +54,7 @@ const data = [
   {
     id: '333076611',
     title: 'ТВ приставка MECOOL KI',
-    price: 1200,
+    price: 100,
     description: 'Всего лишь один шаг сделает ваш телевизор умным, ' +
       'Быстрый и умный MECOOL KI PRO, прекрасно спроектированный, сочетает ' +
       'в себе прочный процессор Cortex-A53 с чипом Amlogic S905D',
@@ -58,7 +70,7 @@ const data = [
   {
     id: 1352840121,
     title: 'Витая пара PROConnect 01-0043-3-25',
-    price: 2200,
+    price: 20,
     description: 'Витая пара Proconnect 01-0043-3-25 является сетевым кабелем' +
       ' с 4 парами проводов типа UTP, в качестве проводника в которых' +
       ' используется алюминий, плакированный медью CCA Такая неэкранированная' +
@@ -69,8 +81,8 @@ const data = [
       ' оборудование в единую сеть.',
     category: 'cables',
     discont: false,
-    count: 420,
-    units: 'Volts',
+    count: 10,
+    units: 'м',
     images: {
       small: 'img/lan_proconnect43-3-25.jpg',
       big: 'img/lan_proconnect43-3-25-b.jpg',
@@ -78,21 +90,8 @@ const data = [
   },
 ];
 
-const zero = {
-  category: 'mobile-phone',
-  count: 3,
-  description: `Смартфон Xiaomi 11T – это 
-      представитель флагманской линейки выпущенной во второй 
-      половине 2021 года. И он полностью соответствует такому 
-      позиционированию, предоставляя своим обладателям возможность 
-      пользоваться отличными камерами, ни в чем себя не ограничивать 
-      при запуске игр
-      и других требовательных приложений.`,
-  discont: false,
-  id: '228808186',
-};
 
-
+// * getRandomInt
 const getRandomInt = (min, max) => {
   min = min < max ? min : max;
   max = min > max ? min : max;
@@ -106,36 +105,37 @@ const getRandomInt = (min, max) => {
 const addGoods = document.querySelector('.panel__add-goods');
 const tableBody = document.querySelector('.table__body');
 const totalPrice = document.querySelector('.crm__total-price');
-console.log('totalPrice: ', totalPrice);
 
+// * getCountTotalPrice
 const getCountTotalPrice = (data) => {
   let total = 0;
   total = data.reduce((previousSumm, currentProduct) => {
-    console.log('previousSumm: ', previousSumm);
-    console.log('currentProduct: ', currentProduct);
-    console.log('currentProduct count: ', currentProduct.count);
-    return (previousSumm + currentProduct.count * currentProduct.price);
+    // сумма отдельного товара
+    const sum = currentProduct.count * currentProduct.price;
+    currentProduct.sum = sum;
+    // return (previousSumm + currentProduct.count * currentProduct.price);
+    return (previousSumm + sum);
   }, 0);
-  console.log('total: ', total);
   return total;
 };
 
+// * countTotalPrice
 const countTotalPrice = (data) => {
+  const euroSymb = '&#8364;';
   const total = getCountTotalPrice(data);
-  console.log('total в самом начале: ', total);
-  // todo сделать красиво
-  totalPrice.textContent = total + ' р';
+  // totalPrice.textContent = '€ ' + total;
+  totalPrice.innerHTML = euroSymb + ' ' + total;
 };
 
-
+// * getDataProduct
 const getDataProduct = (data, id) => {
   // filter фильтрует элементы выдает массив контактов с данным id
   const product = data.filter(product => (product.id === id));
-  console.log('product: ', product);
+  console.log('product: ', product[0]);
   return product[0];
 };
 
-
+// * deteleDataProduct
 const deteleDataProduct = (data, id) => {
   // удалить этот элем из массива
   data.forEach((product, index) => {
@@ -145,7 +145,7 @@ const deteleDataProduct = (data, id) => {
   });
 };
 
-/* * Returns a hash code from a string use it for hosh contocts */
+// * hashCode
 const hashCode = (str) => {
   let hash = 0;
   for (let i = 0, len = str.length; i < len; i++) {
@@ -156,7 +156,7 @@ const hashCode = (str) => {
   return Math.abs(hash);
 };
 
-
+// * makeDataIdHash
 const makeDataIdHash = (data) => {
   data.forEach((product, index) => {
     const str = '' + index +
@@ -166,43 +166,7 @@ const makeDataIdHash = (data) => {
   return;
 };
 
-
-// * обработчик для кнопок товаров
-tableBody.addEventListener('click', (e) => {
-  const target = e.target;
-
-  if (target.classList.contains('table__btn_pic')) {
-    console.log('кнопка Добавить картинку');
-    return;
-  }
-
-  if (target.classList.contains('table__btn_edit')) {
-    console.log('кнопка Редактировать товар');
-    return;
-  }
-
-  // Клик по кнопке Удалить товар
-  if (target.classList.contains('table__btn_del')) {
-    const targetProduct = target.closest('.product');
-    const productID = targetProduct?.id;
-
-    if (confirm(`
-Удалить товар?
-  ID ${productID} 
-  ${getDataProduct(data, productID).title}`)) {
-      console.log('Удаляем товар');
-      deteleDataProduct(data, productID);
-      targetProduct.remove();
-      console.log('data: ', data);
-    } else {
-      console.log('Отмена!\nТовар не удален');
-    }
-    return;
-  }
-});
-
-
-// * функция создания элемента
+// * createElem функция создания элемента
 // взята из интенсива
 const createElem = (tag, attr = {}, text) => {
   const elem = document.createElement(tag);
@@ -213,14 +177,13 @@ const createElem = (tag, attr = {}, text) => {
   return elem;
 };
 
-
 // * createRow возвращает динамически созданый ряд row
 const createRow = (
     rowNumber, {
       id,
       title,
       category,
-      description, // todo
+      description,
       units,
       count,
       price,
@@ -230,6 +193,8 @@ const createRow = (
   const row = createElem('tr');
   row.id = 'id' + id;
   row.classList.add('product');
+  row.title = title;
+  row.dataset.description = description;
 
   const cellNumb = createElem(
     'td',
@@ -322,15 +287,51 @@ const renderGoods = (products = []) => {
           id: product.id,
           title: product.title,
           category: product.category,
+          description: product.description,
           units: product.units,
-          count: product.count,
           price: product.price,
+          count: product.count,
         }),
       );
     });
   }
   return;
 };
+
+
+// * обработчик для кнопок товаров
+tableBody.addEventListener('click', (e) => {
+  const target = e.target;
+
+  if (target.classList.contains('table__btn_pic')) {
+    console.log('кнопка Добавить картинку');
+    return;
+  }
+
+  if (target.classList.contains('table__btn_edit')) {
+    console.log('кнопка Редактировать товар');
+    return;
+  }
+
+  // Клик по кнопке Удалить товар
+  if (target.classList.contains('table__btn_del')) {
+    const targetProduct = target.closest('.product');
+    const productID = targetProduct?.id;
+
+    if (confirm(`
+Удалить товар?
+  ID ${productID} 
+  ${getDataProduct(data, productID)?.title}`)) {
+      console.log('Удаляем товар');
+      deteleDataProduct(data, productID);
+      targetProduct.remove();
+      console.log('data: ', data);
+    } else {
+      console.log('Отмена!\nТовар не удален');
+    }
+    return;
+  }
+});
 
 
 // * modalControl
@@ -352,30 +353,31 @@ const modalControl = () => {
   const units = form.elements.units;
   const count = form.elements.count;
   const checkboxDiscount = form.elements.discount;
-  const discont = checkboxDiscount.checked;
+  let isDiscount = checkboxDiscount.checked; // true OR false
   const discountCount = form.elements.discount_count;
   const price = form.elements.price;
   const productImage = form.elements.image;
 
-  
+
   const getVendorID = _ => {
     // todo randi or hash
-    // const randomID = Math.floor(Math.random() * 1000000000);
-    const randomID = getRandomInt(1000000, 9999999);
-    console.log('ID' + randomID); // todo
-    return 'ID' + randomID;
+    const randomID = getRandomInt(100000000, 999999999);
+    // return 'ID' + randomID;
+    return randomID;
   };
 
   let summ = 0;
   const totalSumm = form.elements.total; // сумма out
 
-  const totalSummCount = () => {
+  const totalFormCount = () => {
     // пересчитываем общую сумму
     summ = parseInt(price.value) * parseInt(count.value);
     if (checkboxDiscount.checked) {
+      // вычет скидки в %%
       summ -= summ * parseInt(discountCount.value) / 100;
     }
-    totalSumm.value = 'Ru ' + summ;
+    // totalSumm.value = '€ ' + summ;
+    totalSumm.value = summ ? '€ ' + summ : 0;
     return summ;
   };
 
@@ -393,7 +395,7 @@ const modalControl = () => {
     price.value = 0;
 
     // * общая сумма в окне
-    totalSummCount();
+    totalFormCount();
     console.log('Open Modal');
   };
 
@@ -410,18 +412,15 @@ const modalControl = () => {
     openModal(overlay);
   });
 
-
   // * обработчик расфокуса
   const blurHandler = e => {
-    const trgt = e.target;
-    const val = trgt.value;
-    if (trgt === count ||
-        trgt === price ||
-        trgt === checkboxDiscount ||
-        trgt === discountCount) {
-      console.log('trgt: ', trgt);
+    const target = e.target;
+    if (target === count ||
+        target === price ||
+        target === checkboxDiscount ||
+        target === discountCount) {
       // totalSumm.value = 'Ru ' + summ;
-      totalSummCount();
+      totalFormCount();
     }
   };
 
@@ -434,31 +433,28 @@ const modalControl = () => {
   discountCount.addEventListener('blur', blurHandler);
   price.addEventListener('blur', blurHandler);
 
-
   // * обработка формы SUBMIT
   form.addEventListener('submit', e => {
     e.preventDefault();
     console.log('form submit');
-
     const formData = new FormData(form);
-    // console.log('formData: ', formData);
-    // console.log('formData Array: ', Array.from(formData));
-    // console.log('formData entries: ', formData.entries());
-    // console.log('formData entries: ', [...formData.entries()]);
-    // console.log('formData keys: ', [...formData.keys()]);
-    // console.log('formData values: ', [...formData.values()]);
 
     const product = Object.fromEntries(formData);
-    console.log('product: ', product);
+    product.discount = isDiscount; // checked
+    // product.discount = !!product.discount; // true OR false
+    // product.discount = product.discount ? true : false;
+    product.discount_count = product.discount ? product.discount_count : 0;
 
     const newProduct = {
-      id: vendorCodeID.textContent, // todo
+      id: vendorCodeID.textContent,
       title: product.name,
       category: product.category,
       description: product.description,
       units: product.units,
-      price: product.price,
       count: product.count,
+      price: product.price,
+      discont: product.discount,
+      discountCount: product.discount_count ? product.discount_count : 0,
       summ,
     };
 
@@ -467,9 +463,8 @@ const modalControl = () => {
     console.log('data: ', data);
 
     // * addProductPage();
-    // tableBody.append(createRow(125, {
-    // }));
-    tableBody.append(createRow(125, newProduct));
+    const nextRowNumber = data.length;
+    tableBody.append(createRow(nextRowNumber, newProduct));
     countTotalPrice(data);
     form.reset();
     closeModal(overlay);
@@ -489,6 +484,7 @@ const modalControl = () => {
 
   // * ставим чекбокс дискаунт
   checkboxDiscount.addEventListener('change', e => {
+    isDiscount = checkboxDiscount.checked;
     const disabled = discountCount.disabled;
     if (disabled) {
       discountCount.disabled = false;
@@ -499,6 +495,7 @@ const modalControl = () => {
       discountCount.value = '';
       console.log('Дискаунт отключен');
     }
+    totalFormCount();
   });
 
   // в самом начале закрыть overlay вместе с модальным окном
