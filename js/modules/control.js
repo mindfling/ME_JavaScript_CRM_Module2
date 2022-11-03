@@ -1,8 +1,6 @@
 import data from './dataGoods.js';
-
-import getRandomInt from './utils.js';
+import {getRandomInt} from './hash.js';
 import {createRow} from './createElements.js';
-
 import * as domElemenst from './createElements.js';
 const {
   overlay,
@@ -24,6 +22,8 @@ const {
   tableBody,
   totalPrice,
 } = domElemenst;
+
+import {rowsNumberRecount} from './render.js';
 
 // let {isDiscount} = domElemenst;
 let isDiscount = checkboxDiscount.checked;
@@ -57,10 +57,10 @@ export const modalControl = () => {
 
   const getVendorID = () => {
     const randomID = getRandomInt(100000000, 999999999);
-    return randomID;
     // return 'ID' + randomID;
+    return randomID;
   };
-
+  // count product total sum
   let summ = 0;
   const totalSumm = form.elements.total; // сумма out
 
@@ -161,8 +161,10 @@ export const modalControl = () => {
     console.log('pushed data: ', data);
 
     // * addProductPage();
-    const nextRowNumber = data.length;
-    tableBody.append(createRow(nextRowNumber, newProduct));
+    // const nextRowNumber = data.length;
+    // tableBody.append(createRow(nextRowNumber, newProduct));
+    tableBody.append(createRow(0, newProduct));
+    rowsNumberRecount();
     countTotalPrice(data);
     form.reset();
     closeModal(overlay);

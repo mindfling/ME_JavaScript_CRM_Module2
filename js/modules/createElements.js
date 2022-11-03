@@ -49,14 +49,15 @@ export const createRow = (
   // генерируем динамически по элементам
   const euroSymb = '&#8364;';
   const row = createElem('tr');
-  row.id = 'id' + id;
+  // row.id = 'id' + id;
+  row.id = id;
   row.classList.add('product');
   row.title = title;
   row.dataset.description = description;
 
   const cellNumb = createElem(
     'td',
-    {className: 'table__cell'},
+    {className: 'table__cell table__cell_number'},
     rowNumber,
   );
 

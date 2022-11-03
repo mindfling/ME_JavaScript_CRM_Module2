@@ -1,35 +1,10 @@
 import data from './modules/dataGoods.js';
-
-import {tableBody} from './modules/createElements.js';
-
-// import getRandomInt from './modules/utils.js';
-import {makeDataIdHash} from './modules/hash.js';
-import {modalControl, countTotalPrice} from './modules/control.js';
-// import {createRow} from './modules/createElements.js';
-
-import {renderGoods} from './modules/render.js';
-
 console.log('initial products data: ', data);
-
-
-// * getDataProduct
-const getDataProduct = (data, id) => {
-  // filter фильтрует элементы выдает массив контактов с данным id
-  const product = data.filter(product => (product.id === id));
-  console.log('product: ', product[0]);
-  return product[0];
-};
-
-// * deteleDataProduct
-const deteleDataProduct = (data, id) => {
-  // удалить этот элем из массива
-  data.forEach((product, index) => {
-    if (product.id === id) {
-      data.splice(index, 1);
-    }
-  });
-};
-
+import {tableBody} from './modules/createElements.js';
+// import {makeDataIdHash} from './modules/hash.js';
+import {modalControl, countTotalPrice} from './modules/control.js';
+import {renderGoods, rowsNumberRecount} from './modules/render.js';
+import {getDataProduct, deteleDataProduct} from './modules/serviceData.js';
 
 // * обработчик для кнопок товаров
 tableBody.addEventListener('click', (e) => {
@@ -48,16 +23,20 @@ tableBody.addEventListener('click', (e) => {
   // Клик по кнопке Удалить товар
   if (target.classList.contains('table__btn_del')) {
     const targetProduct = target.closest('.product');
-    const productID = targetProduct?.id;
+    console.log('for remove targetProduct: ', targetProduct);
+    const productId = targetProduct?.id;
 
     if (confirm(`
 Удалить товар?
-  ID ${productID} 
-  ${getDataProduct(data, productID)?.title}`)) {
+  ID ${productId} 
+  ${getDataProduct(data, productId)?.title}`)) {
       console.log('Удаляем товар');
-      deteleDataProduct(data, productID);
+      console.log('data before remove: ', data);
+      deteleDataProduct(data, productId);
+      console.log('productId for remove: ', productId);
       targetProduct.remove();
-      console.log('data: ', data);
+      console.log('data after remove: ', data);
+      rowsNumberRecount();
     } else {
       console.log('Отмена!\nТовар не удален');
     }
@@ -68,10 +47,9 @@ tableBody.addEventListener('click', (e) => {
 
 // * INIT * //
 const init = () => {
-  // пересчитываем id hash у каждого товара
-  makeDataIdHash(data);
   // в начале рендерим отрисовываем таблицу товаров
   renderGoods(data);
+  rowsNumberRecount();
   // функционал работы с модальным окном и формой
   modalControl(data);
   // расчет полной суммы вверху таблицы
