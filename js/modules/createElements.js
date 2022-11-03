@@ -56,7 +56,7 @@ export const createRow = (
 
   const cellNumb = createElem(
     'td',
-    {className: 'table__cell'},
+    {className: 'table__cell table__cell_index table__cell_numb'},
     rowNumber,
   );
 
@@ -74,28 +74,28 @@ export const createRow = (
   );
 
   const cellCategory = createElem('td', {
-    className: 'table__cell table__cell_left',
+    className: 'table__cell table__cell_left table__cell_cat',
   },
   category,
   );
 
   const cellUnits = createElem('td',
-    {className: 'table__cell'},
+    {className: 'table__cell table__cell_units'},
     units,
   );
 
   const cellCount = createElem('td',
-    {className: 'table__cell'},
+    {className: 'table__cell table__cell_count'},
     count,
   );
 
   const cellPrice = createElem('td', {
-    className: 'table__cell',
+    className: 'table__cell table__cell_price',
   });
   cellPrice.innerHTML = `${euroSymb} ${price}`;
 
   const cellSum = createElem('td', {
-    className: 'table__cell',
+    className: 'table__cell table__cell_sum',
   });
   cellSum.innerHTML = `${euroSymb} ${count * price}`;
 

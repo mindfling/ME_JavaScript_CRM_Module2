@@ -1,5 +1,5 @@
 // данные списик объектов наших товаров
-const data = [
+export const data = [
   {
     id: 11065,
     title: 'Смартфон RedME 15M 64GB',
@@ -86,6 +86,3 @@ const data = [
     },
   },
 ];
-
-
-export default data;
