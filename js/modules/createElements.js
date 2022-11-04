@@ -1,10 +1,13 @@
 // * DOM elements
-export const overlay = document.querySelector('.overlay');
-export const modal = overlay.querySelector('.modal');
+export const addGoods = document.querySelector('.panel__add-goods'); // кнопка
+export const tableBody = document.querySelector('.table__body');
+export const totalPrice = document.querySelector('.crm__total-price');
 
+export const overlay = document.querySelector('.overlay');
+const modal = overlay.querySelector('.modal');
 export const vendorCodeID = modal.querySelector('.vendor-code__id');
-export const modalClose = modal.querySelector('.modal__close');
-export const modalTitle = modal.querySelector('.modal__title');
+// export const modalClose = modal.querySelector('.modal__close');
+// export const modalTitle = modal.querySelector('.modal__title');
 
 export const form = document.forms.main; // main modal form
 export const productName = form.elements.name;
@@ -13,15 +16,9 @@ export const description = form.elements.description;
 export const units = form.elements.units;
 export const count = form.elements.count;
 export const checkboxDiscount = form.elements.discount;
-// export let isDiscount = checkboxDiscount.checked; // true OR false
 export const discountCount = form.elements.discount_count;
 export const price = form.elements.price;
-export const productImage = form.elements.image;
-
-export const addGoods = document.querySelector('.panel__add-goods');
-
-export const tableBody = document.querySelector('.table__body');
-export const totalPrice = document.querySelector('.crm__total-price');
+// export const productImage = form.elements.image;
 
 
 // * create Elem функция создания элемента
@@ -49,7 +46,6 @@ export const createRow = (
   // генерируем динамически по элементам
   const euroSymb = '&#8364;';
   const row = createElem('tr');
-  // row.id = 'id' + id;
   row.id = id;
   row.classList.add('product');
   row.title = title;

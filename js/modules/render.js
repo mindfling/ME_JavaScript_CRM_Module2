@@ -27,7 +27,6 @@ export const renderGoods = (products = []) => {
 
 export const rowsNumberRecount = () => {
   const allNumbers = tableBody.querySelectorAll('.table__cell_number');
-  console.log('allNumbers: ', allNumbers);
   let cellCount = 0;
   allNumbers.forEach((cell) => {
     cell.textContent = ++cellCount;
