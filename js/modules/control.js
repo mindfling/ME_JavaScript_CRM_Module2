@@ -1,10 +1,9 @@
-// import data from './dataGoods.js';
-
-import getRandomInt from './utils.js';
+// import getRandomInt from './utils.js';
+import {getRandomInt} from './hash.js';
 import {createRow} from './createElements.js';
 
 import * as domElemenst from './createElements.js';
-import {getStorage} from './serviceStorage.js';
+import {getDataProduct, getProductData} from './serviceStorage.js';
 const {
   overlay,
   // modal,
@@ -30,7 +29,7 @@ const {
 let isDiscount = checkboxDiscount.checked;
 
 // todo
-const data = getStorage();
+const data = getProductData();
 
 // * get Count Total Price
 const getCountTotalPrice = (data) => {

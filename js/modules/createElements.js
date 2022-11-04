@@ -1,6 +1,6 @@
 // * DOM elements
 export const overlay = document.querySelector('.overlay');
-export const modal = overlay.querySelector('.modal');
+const modal = overlay.querySelector('.modal');
 
 export const vendorCodeID = modal.querySelector('.vendor-code__id');
 export const modalClose = modal.querySelector('.modal__close');
@@ -49,7 +49,7 @@ export const createRow = (
   // генерируем динамически по элементам
   const euroSymb = '&#8364;';
   const row = createElem('tr');
-  row.id = 'id' + id;
+  row.id = id;
   row.classList.add('product');
   row.title = title;
   row.dataset.description = description;

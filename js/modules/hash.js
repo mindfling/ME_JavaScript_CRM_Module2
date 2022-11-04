@@ -17,6 +17,15 @@ export const makeDataIdHash = (data) => {
     const str = '' + index +
     Object.values(product).reduce((accum, curr) => (accum + curr), '');
     product.id = hashCode(str).toString();
+    console.log('hash product.id: ', product.id);
   });
   return;
+};
+
+
+// * get Random Int untils for random form id generate
+export const getRandomInt = (min, max) => {
+  min = Math.ceil(min < max ? min : max);
+  max = Math.floor(min > max ? min : max);
+  return Math.floor(Math.random() * (max - min + 1) + min);
 };

@@ -1,36 +1,37 @@
-import {data as initial} from './modules/dataGoods.js';
+import {initialData} from './modules/dataGoods.js';
+// todo make func initStorage(initialData)
 
 import {tableBody} from './modules/createElements.js';
 // import getRandomInt from './modules/utils.js';
-import {makeDataIdHash} from './modules/hash.js';
+// import {makeDataIdHash} from './modules/hash.js';
 import {modalControl, countTotalPrice} from './modules/control.js';
 // import {createRow} from './modules/createElements.js';
 import {renderGoods} from './modules/render.js';
 import {
-  getStorage,
-  setStorage,
-  removeStorage,
+  getProductData,
+  setProductData,
+  addProductData,
+  removeProductData,
   getDataProduct,
-  deteleDataProduct,
 } from './modules/serviceStorage.js';
-
-const storageData = getStorage();
-// todo
-let data = [];
-if (storageData) {
-  data = storageData;
-  console.log('storageData: ', storageData);
-  console.log('data storage: ', data);
-} else {
-  data = initial;
-  console.log('data initial: ', data);
-}
 
 
 // * INIT * //
 const init = () => {
-  // пересчитываем id hash у каждого товара
-  makeDataIdHash(data);
+  // todo
+  const storageData = getProductData();
+  let data = [];
+
+  if (storageData && storageData.length > 0) {
+  // если в хранилище есть данные
+    data = storageData;
+    console.log('Загрузка списка товаров из хранилища', data);
+  } else {
+  // если в хранилище пусто
+    data = initialData;
+    setProductData(data);
+    console.log('Инициализация списка продуктов из массива data', data);
+  }
   // в начале рендерим отрисовываем таблицу товаров
   renderGoods(data);
   // функционал работы с модальным окном и формой
@@ -42,30 +43,30 @@ const init = () => {
   // * обработчик для кнопок товаров
   tableBody.addEventListener('click', (e) => {
     const target = e.target;
-
+    // Клик по кнопке Изображение товара
     if (target.classList.contains('table__btn_pic')) {
       console.log('кнопка Добавить картинку');
       return;
     }
-
+    // Клик по кнопке Редактировать товар
     if (target.classList.contains('table__btn_edit')) {
       console.log('кнопка Редактировать товар');
       return;
     }
-
     // Клик по кнопке Удалить товар
     if (target.classList.contains('table__btn_del')) {
-      const targetProduct = target.closest('.product');
-      const productID = targetProduct?.id;
+      const targetProduct = target.closest('.product'); // row product
+      const productId = targetProduct?.id;
       // переспрашиваем у пользователя
       if (confirm(`
 Удалить товар?
-  ID ${productID} 
-  ${getDataProduct(data, productID)?.title}`)) {
+  ID ${productId} 
+  ${getDataProduct(data, productId)?.title}`)) {
         console.log('Удаляем товар');
-        deteleDataProduct(productID);
+        removeProductData(productId);
         targetProduct.remove();
-        console.log('data: ', data);
+        data = getProductData();
+        console.log('data after delete: ', data);
       } else {
         console.log('Отмена!\nТовар не удален');
       }
