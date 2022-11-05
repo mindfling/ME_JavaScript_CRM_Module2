@@ -66,7 +66,9 @@ const init = () => {
         removeProductData(productId);
         targetProduct.remove();
         data = getProductData();
+        countTotalPrice();
         console.log('data after delete: ', data);
+        // todo
       } else {
         console.log('Отмена!\nТовар не удален');
       }

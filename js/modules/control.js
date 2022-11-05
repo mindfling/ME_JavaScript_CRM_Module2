@@ -3,7 +3,7 @@ import {getRandomInt} from './hash.js';
 import {createRow} from './createElements.js';
 
 import * as domElemenst from './createElements.js';
-import {getDataProduct, getProductData} from './serviceStorage.js';
+import {addProductData, getProductData} from './serviceStorage.js';
 const {
   overlay,
   // modal,
@@ -29,7 +29,7 @@ const {
 let isDiscount = checkboxDiscount.checked;
 
 // todo
-const data = getProductData();
+// const data = getProductData();
 
 // * get Count Total Price
 const getCountTotalPrice = (data) => {
@@ -45,11 +45,19 @@ const getCountTotalPrice = (data) => {
 };
 
 // * count Total Price
-export const countTotalPrice = (data) => {
+export const countTotalPrice = () => {
+  const data = getProductData();
   const euroSymb = '&#8364;';
   const total = getCountTotalPrice(data);
   // totalPrice.textContent = '€ ' + total;
   totalPrice.innerHTML = euroSymb + ' ' + total;
+};
+
+const addProductPage = (list, product) => {
+  const data = getProductData();
+  // следующий номер товара в таблице
+  const nextRowNumber = data.length;
+  list.append(createRow(nextRowNumber, product));
 };
 
 // * modal Control
@@ -140,8 +148,6 @@ export const modalControl = () => {
 
     const product = Object.fromEntries(formData);
     product.discount = isDiscount; // checked
-    // product.discount = !!product.discount; // true OR false
-    // product.discount = product.discount ? true : false;
     product.discount_count = product.discount ? product.discount_count : 0;
 
     const newProduct = {
@@ -157,15 +163,10 @@ export const modalControl = () => {
       summ,
     };
 
-    // * addProductData();
-    data.push(newProduct);
-    console.log('new Product: ', newProduct);
-    console.log('pushed data: ', data);
+    addProductData(newProduct); // добавляем данные в хранилище
+    addProductPage(tableBody, newProduct); // дабавляем строку товара в таблицу
 
-    // * addProductPage();
-    const nextRowNumber = data.length;
-    tableBody.append(createRow(nextRowNumber, newProduct));
-    countTotalPrice(data);
+    countTotalPrice();
     form.reset();
     closeModal(overlay);
   });
