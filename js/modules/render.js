@@ -3,12 +3,12 @@
 import {tableBody, createRow} from './createElements.js';
 
 
-// * renderGoods перебирает массив объектов товаров и рендерит строки
-export const renderGoods = (products = []) => {
+// * render goods перебирает массив объектов товаров и рендерит строки
+export const renderGoods = (productsData = []) => {
   // перебираем массив объектов
-  if (Array.isArray(products)) {
+  if (Array.isArray(productsData)) {
     // вставляем ряды в таблицу
-    products.forEach((product, index) => {
+    productsData.forEach((product, index) => {
       tableBody.append(
         createRow(index + 1, {
           id: product.id,
@@ -23,4 +23,11 @@ export const renderGoods = (products = []) => {
     });
   }
   return;
+};
+
+// * clear list
+export const clearList = (list) => {
+  while (list.lastChild) {
+    list.lastChild.remove();
+  }
 };

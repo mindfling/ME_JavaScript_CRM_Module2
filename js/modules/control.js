@@ -162,7 +162,7 @@ export const modalControl = () => {
       discountCount: product.discount_count ? product.discount_count : 0,
       summ,
     };
-
+    console.log('Добавляем товар');
     addProductData(newProduct); // добавляем данные в хранилище
     addProductPage(tableBody, newProduct); // дабавляем строку товара в таблицу
 

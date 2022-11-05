@@ -6,11 +6,11 @@ import {tableBody} from './modules/createElements.js';
 // import {makeDataIdHash} from './modules/hash.js';
 import {modalControl, countTotalPrice} from './modules/control.js';
 // import {createRow} from './modules/createElements.js';
-import {renderGoods} from './modules/render.js';
+import {clearList, renderGoods} from './modules/render.js';
 import {
   getProductData,
   setProductData,
-  addProductData,
+  // addProductData,
   removeProductData,
   getDataProduct,
 } from './modules/serviceStorage.js';
@@ -35,9 +35,9 @@ const init = () => {
   // в начале рендерим отрисовываем таблицу товаров
   renderGoods(data);
   // функционал работы с модальным окном и формой
-  modalControl(data);
+  modalControl();
   // расчет полной суммы вверху таблицы
-  countTotalPrice(data);
+  countTotalPrice();
 
 
   // * обработчик для кнопок товаров
@@ -62,13 +62,12 @@ const init = () => {
 Удалить товар?
   ID ${productId} 
   ${getDataProduct(data, productId)?.title}`)) {
-        console.log('Удаляем товар');
         removeProductData(productId);
-        targetProduct.remove();
+        clearList(tableBody);
         data = getProductData();
+        renderGoods(data);
         countTotalPrice();
-        console.log('data after delete: ', data);
-        // todo
+        console.log('Удалили товар');
       } else {
         console.log('Отмена!\nТовар не удален');
       }
