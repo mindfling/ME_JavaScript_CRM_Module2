@@ -1,5 +1,4 @@
 import {initialData} from './modules/dataGoods.js';
-// todo make func initStorage(initialData)
 
 import {tableBody} from './modules/createElements.js';
 // import getRandomInt from './modules/utils.js';
@@ -9,29 +8,18 @@ import {modalControl, countTotalPrice} from './modules/control.js';
 import {clearList, renderGoods} from './modules/render.js';
 import {
   getProductData,
-  setProductData,
+  // setProductData,
   // addProductData,
   removeProductData,
   getDataProduct,
+  initStorage,
 } from './modules/serviceStorage.js';
 
 
 // * INIT * //
 const init = () => {
-  // todo
-  const storageData = getProductData();
-  let data = [];
-
-  if (storageData && storageData.length > 0) {
-  // если в хранилище есть данные
-    data = storageData;
-    console.log('Загрузка списка товаров из хранилища', data);
-  } else {
-  // если в хранилище пусто
-    data = initialData;
-    setProductData(data);
-    console.log('Инициализация списка продуктов из массива data', data);
-  }
+  // инициализируем данные в хранилище из массива
+  let data = initStorage(initialData);
   // в начале рендерим отрисовываем таблицу товаров
   renderGoods(data);
   // функционал работы с модальным окном и формой

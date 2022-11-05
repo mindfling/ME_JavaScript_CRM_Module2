@@ -3,6 +3,7 @@
 // ключ доступа к данным из Хранилища
 const STORAGE_KEY = 'CRM'; // ?
 
+
 /*
 export const getProductData = () => {
   const storageData = localStorage.getItem(STORAGE_KEY);
@@ -37,4 +38,22 @@ export const getDataProduct = (data, id) => {
   // eslint-disable-next-line eqeqeq
   const products = data.filter(product => (product.id == id));
   return products[0];
+};
+
+export const initStorage = (initialData) => {
+  const storageData = getProductData();
+  let data = [];
+
+  if (storageData && storageData.length > 0) {
+  // если в хранилище есть данные
+    data = storageData;
+    console.log('Загрузка списка товаров из хранилища', data);
+  } else {
+  // если в хранилище пусто
+    data = initialData;
+    setProductData(data);
+    console.log('Инициализация списка продуктов из массива data', data);
+  }
+
+  return data;
 };
