@@ -1,4 +1,4 @@
-import data from './modules/dataGoods.js';
+import data from './modules/dataGoods.js'; // ! data массив продуктов
 import {tableBody} from './modules/createElements.js';
 import {modalControl, countTotalPrice} from './modules/control.js';
 import {renderGoods, rowsNumberRecount} from './modules/render.js';
@@ -8,6 +8,7 @@ console.log('initial products data: ', data);
 
 
 // * INIT * //
+// ? init ?
 const init = () => {
   // в начале рендерим отрисовываем таблицу товаров
   renderGoods(data);
@@ -18,6 +19,7 @@ const init = () => {
   countTotalPrice(data);
 
   // обработчик для кнопок товаров
+  // ? добавить в модуль control.js ?
   tableBody.addEventListener('click', (e) => {
     const target = e.target;
     if (target.classList.contains('table__btn_pic')) {
@@ -37,9 +39,13 @@ const init = () => {
     ID ${productId} 
     ${getDataProduct(data, productId)?.title}`)) {
         console.log('Удаляем товар');
+        // ? удаляем товар
         deteleDataProduct(data, productId);
+        // ? удаляем ряд из DOM
         targetProduct.remove();
+        // ? пересчитываем стоимость
         countTotalPrice(data);
+        // ? пересчитываем индексы
         rowsNumberRecount();
       } else {
         console.log('Отмена!\nТовар не удален');
@@ -50,4 +56,4 @@ const init = () => {
 };
 
 // * init start
-init();
+init(); // ? где правильно запускать init() ???

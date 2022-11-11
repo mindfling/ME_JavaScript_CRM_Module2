@@ -47,6 +47,7 @@ export const countTotalPrice = (data) => {
 // обработка событий модального окна, оверлея и формы
 export const modalControl = () => {
   const getVendorID = () => {
+    // ? присваеваем id новому товару
     const randomID = getRandomInt(100000000, 999999999);
     // return 'ID' + randomID;
     return randomID;
@@ -70,6 +71,7 @@ export const modalControl = () => {
   const openModal = (overlay) => {
     overlay.classList.add('active');
     // При открытии модального окна должен генерироваться случайный id товара
+    // ??? не много ли у меня коментариев ???
     // и заполняться span с классом vendor-code__id
     vendorCodeID.textContent = getVendorID();
     //  ставим поля в значения по умолчанию
@@ -80,13 +82,11 @@ export const modalControl = () => {
     price.value = 0;
     //  общая сумма в окне
     totalFormCount();
-    // console.log('Open Modal');
   };
 
   // * закрываем модальное окно
   const closeModal = (overlay) => {
     overlay.classList.remove('active');
-    // console.log('Close Modal');
   };
 
   // * клик по кнопке Добавить Товар
@@ -101,7 +101,6 @@ export const modalControl = () => {
         target === price ||
         target === checkboxDiscount ||
         target === discountCount) {
-      // totalSumm.value = 'Ru ' + summ;
       totalFormCount();
     }
   };
@@ -121,6 +120,7 @@ export const modalControl = () => {
 
   const addProductPage = (list, product) => {
     list.append(createRow(0, product));
+    // ? как лучше ставить номер ряда
     // const nextRowNumber = data.length;
     // tableBody.append(createRow(nextRowNumber, newProduct));
   };
@@ -149,9 +149,12 @@ export const modalControl = () => {
       summ,
     };
 
+    // ? вместе
     addProductData(data, newProduct);
     addProductPage(tableBody, newProduct);
+    // ? пересчет индексов
     rowsNumberRecount();
+
     countTotalPrice(data);
     form.reset();
     closeModal(overlay);
@@ -173,17 +176,17 @@ export const modalControl = () => {
     isDiscount = checkboxDiscount.checked;
     const disabled = discountCount.disabled;
     if (disabled) {
+      // Активировируем дискаунт
       discountCount.disabled = false;
       discountCount.value = 0;
-      // console.log('Активирован дискаунт');
     } else {
+      // Дискаунт отключаем
       discountCount.disabled = true;
       discountCount.value = '';
-      // console.log('Дискаунт отключен');
     }
     totalFormCount();
   });
 
-  // в самом начале закрыть overlay вместе с модальным окном
+  // в самом начале закрываем overlay вместе с модальным окном
   closeModal(overlay);
 };

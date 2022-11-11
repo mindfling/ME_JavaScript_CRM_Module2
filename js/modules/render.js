@@ -1,7 +1,14 @@
 // * All renders
-
 import {tableBody, createRow} from './createElements.js';
 
+// ? пересчет номеров строк так ???
+export const rowsNumberRecount = () => {
+  const allNumbers = tableBody.querySelectorAll('.table__cell_number');
+  let cellCount = 0;
+  allNumbers.forEach((cell) => {
+    cell.textContent = ++cellCount;
+  });
+};
 
 // * renderGoods перебирает массив объектов товаров и рендерит строки
 export const renderGoods = (products = []) => {
@@ -22,13 +29,7 @@ export const renderGoods = (products = []) => {
       );
     });
   }
+  // ? добавить пересчет сюда ?
+  // ? rowsNumberRecount() // ?
   return;
-};
-
-export const rowsNumberRecount = () => {
-  const allNumbers = tableBody.querySelectorAll('.table__cell_number');
-  let cellCount = 0;
-  allNumbers.forEach((cell) => {
-    cell.textContent = ++cellCount;
-  });
 };

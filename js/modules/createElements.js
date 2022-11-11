@@ -1,4 +1,5 @@
 // * DOM elements
+// ? правильно ли получаем DOM элементы ?
 export const addGoods = document.querySelector('.panel__add-goods'); // кнопка
 export const tableBody = document.querySelector('.table__body');
 export const totalPrice = document.querySelector('.crm__total-price');
