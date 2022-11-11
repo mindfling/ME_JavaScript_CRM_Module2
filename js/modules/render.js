@@ -2,6 +2,12 @@
 
 import {tableBody, createRow} from './createElements.js';
 
+// * clear list
+export const clearList = (list) => {
+  while (list.lastChild) {
+    list.lastChild.remove();
+  }
+};
 
 // * render goods перебирает массив объектов товаров и рендерит строки
 export const renderGoods = (productsData = []) => {
@@ -25,9 +31,3 @@ export const renderGoods = (productsData = []) => {
   return;
 };
 
-// * clear list
-export const clearList = (list) => {
-  while (list.lastChild) {
-    list.lastChild.remove();
-  }
-};

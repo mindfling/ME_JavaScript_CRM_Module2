@@ -1,8 +1,8 @@
 // * service local Storage
 
 // ключ доступа к данным из Хранилища
-const STORAGE_KEY = 'CRM'; // ?
-
+const STORAGE_KEY = 'CRM';
+// ? хранилище в localStorage
 
 /*
 export const getProductData = () => {
@@ -10,6 +10,7 @@ export const getProductData = () => {
   return (storageData ? JSON.parse(storageData) : []);
 };
 */
+// ? какой вариант лучше ??
 // получаем текущие данные из хранилища m
 export const getProductData = () => (localStorage.getItem(STORAGE_KEY) ?
   JSON.parse(localStorage.getItem(STORAGE_KEY)) : []);
@@ -50,6 +51,7 @@ export const initStorage = (initialData) => {
     console.log('Загрузка списка товаров из хранилища', data);
   } else {
   // если в хранилище пусто
+    // ? здесь при пустом хранилище инициализируем localStorage из массива data
     data = initialData;
     setProductData(data);
     console.log('Инициализация списка продуктов из массива data', data);

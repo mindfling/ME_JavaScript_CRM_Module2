@@ -13,7 +13,6 @@ export const description = form.elements.description;
 export const units = form.elements.units;
 export const count = form.elements.count;
 export const checkboxDiscount = form.elements.discount;
-// export let isDiscount = checkboxDiscount.checked; // true OR false
 export const discountCount = form.elements.discount_count;
 export const price = form.elements.price;
 export const productImage = form.elements.image;
