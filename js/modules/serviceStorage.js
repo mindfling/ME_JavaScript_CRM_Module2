@@ -43,19 +43,17 @@ export const getDataProduct = (data, id) => {
 
 export const initStorage = (initialData) => {
   const storageData = getProductData();
-  let data = [];
-
-  if (storageData && storageData.length > 0) {
-  // если в хранилище есть данные
-    data = storageData;
+  if (Array.isArray(storageData) && storageData.length > 0) {
+    // если в хранилище есть данные
+    const data = storageData;
     console.log('Загрузка списка товаров из хранилища', data);
+    return data;
   } else {
-  // если в хранилище пусто
-    // ? здесь при пустом хранилище инициализируем localStorage из массива data
-    data = initialData;
+    // если в хранилище пусто
+    // ? при пустом хранилище инициализируем localStorage из массива data
+    const data = initialData;
     setProductData(data);
     console.log('Инициализация списка продуктов из массива data', data);
+    return data;
   }
-
-  return data;
 };
