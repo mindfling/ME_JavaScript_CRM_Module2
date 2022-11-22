@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="ru">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -9,26 +8,20 @@
   <link rel="preload" href="fonts/inter-v7-latin_cyrillic-500.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/inter-v7-latin_cyrillic-600.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/inter-v7-latin_cyrillic-700.woff2" as="font" type="font/woff2" crossorigin>
-
   <link rel="stylesheet" href="css/index.css">
-
-  <script src="js/script.js" defer></script>
-  <title>CRM</title>
+  <script src="js/script.js" type="module"></script>
+  <title>CRM with modules lesson 10 using localStorage with initial data array</title>
 </head>
-
 <body>
 
   <section class="crm">
     <div class="container">
       <header class="crm__header">
         <h1 class="crm__title">CRM - ShopOnline</h1>
-
         <p class="crm__total">Итоговая стоимость:
-          <span class="crm__total-price">$ 900.00</span>
+          <span class="crm__total-price">$0</span>
         </p>
       </header>
-
-
       <div class="crm__goods goods">
         <div class="goods__panel panel">
           <button class="panel__filter">Фильтр</button>
@@ -37,7 +30,6 @@
           </form>
           <button class="panel__add-goods">Добавить товар</button>
         </div>
-        
         <div class="goods__table-wrapper">
           <table class="goods__table table">
             <thead class="table__header">
@@ -55,8 +47,6 @@
             <tbody class="table__body"></tbody>
           </table>
         </div>
-
-
         <div class="sub-panel">
           <p class="sub-panel__choice-pages">Показывать на странице: 5</p>
           <p class="sub-panel__pages">1-10 из 48</p>
@@ -64,10 +54,8 @@
           <a href="#" class="sub-panel__right"></a>
         </div>
       </div>
-
     </div>
   </section>
-
 
   <div class="overlay active">
     <div class="overlay__modal modal">
@@ -75,11 +63,10 @@
         <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="m2 2 20 20M2 22 22 2" stroke="currentColor" stroke-width="3" stroke-linecap="round" /></svg>
       </button>
-
       <div class="modal__top">
         <h2 class="modal__title">Добавить товар</h2>
         <div class="modal__vendor-code vendor-code">
-          <p class="vendor-code__wrapper">id: <span class="vendor-code__id">24601654816512</span></p>
+          <p class="vendor-code__wrapper">id: <span class="vendor-code__id">999999999</span></p>
           <button class="vendor-code__btn">
             <svg width="15" height="15" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g clip-path="url(#a)" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -95,31 +82,24 @@
           </button>
         </div>
       </div>
-
       <form name="main" class="modal__form" action="https://jsonplaceholder.typicode.com/posts" method="post">
         <fieldset class="modal__fieldset">
-
           <label class="modal__label modal__label_name" for="name">
             <span class="modal__text">Наименование</span>
             <input class="modal__input" type="text" name="name" id="name" required>
           </label>
-
-
           <label class="modal__label modal__label_category" for="category">
             <span class="modal__text">Категория</span>
             <input class="modal__input" type="text" name="category" id="category" required>
           </label>
-
           <label class="modal__label modal__label_description" for="description">
             <span class="modal__text">Описание</span>
             <textarea class="modal__input modal__input_textarea" name="description" id="description"></textarea>
           </label>
-
           <label class="modal__label modal__label_units" for="units">
             <span class="modal__text">Единицы измерения</span>
             <input class="modal__input" type="text" name="units" id="units" required>
           </label>
-
           <div class="modal__label modal__label_discount">
             <label class="modal__text" for="discount">Дисконт</label>
             <div class="modal__checkbox-wrapper">
@@ -127,34 +107,26 @@
               <input class="modal__input modal__input_discount" type="number" name="discount_count" disabled>
             </div>
           </div>
-
-
           <label class="modal__label modal__label_count" for="count">
             <span class="modal__text">Количество</span>
             <input class="modal__input" type="number" name="count" id="count" required>
           </label>
-
           <label class="modal__label modal__label_price" for="price">
             <span class="modal__text">Цена</span>
             <input class="modal__input" type="number" name="price" id="price" required>
           </label>
-
           <label tabindex="0" for="image" class="modal__label modal__label_file">Добавить изображение</label>
           <input class="modal__file visually-hidden" tabindex="-1" type="file" name="image" id="image">
         </fieldset>
-
         <div class="modal__footer">
           <label class="modal__total">Итоговая стоимость:
-            <output class="modal__total-price" name="total">$ 900.00</output>
+            <output class="modal__total-price" name="total">$0.00</output>
           </label>
-
           <button class="modal__submit" type="submit">Добавить товар</button>
         </div>
       </form>
     </div>
   </div>
 
-
 </body>
-
 </html>
