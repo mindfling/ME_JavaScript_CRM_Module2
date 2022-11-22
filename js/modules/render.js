@@ -1,21 +1,21 @@
 // * All renders
 
-import {tableBody, createRow} from './createElements.js';
+import {createRow} from './createElements.js';
 
-// * clear list
+// clear list
 export const clearList = (list) => {
   while (list.lastChild) {
     list.lastChild.remove();
   }
 };
 
-// * render goods перебирает массив объектов товаров и рендерит строки
-export const renderGoods = (productsData = []) => {
+// render goods перебирает массив объектов товаров и рендерит строки
+export const renderGoods = (list, productsData = []) => {
   // перебираем массив объектов
   if (Array.isArray(productsData)) {
     // вставляем ряды в таблицу
     productsData.forEach((product, index) => {
-      tableBody.append(
+      list.append(
         createRow(index + 1, {
           id: product.id,
           title: product.title,

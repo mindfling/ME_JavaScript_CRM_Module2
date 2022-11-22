@@ -1,29 +1,7 @@
-// * DOM elements
-export const overlay = document.querySelector('.overlay');
-const modal = overlay.querySelector('.modal');
+// * elements
+// import elements from './elementsDOM.js';
 
-export const vendorCodeID = modal.querySelector('.vendor-code__id');
-export const modalClose = modal.querySelector('.modal__close');
-export const modalTitle = modal.querySelector('.modal__title');
-
-export const form = document.forms.main; // main modal form
-export const productName = form.elements.name;
-export const category = form.elements.category;
-export const description = form.elements.description;
-export const units = form.elements.units;
-export const count = form.elements.count;
-export const checkboxDiscount = form.elements.discount;
-export const discountCount = form.elements.discount_count;
-export const price = form.elements.price;
-export const productImage = form.elements.image;
-
-export const addGoods = document.querySelector('.panel__add-goods');
-
-export const tableBody = document.querySelector('.table__body');
-export const totalPrice = document.querySelector('.crm__total-price');
-
-
-// * create Elem функция создания элемента
+// create Elem функция создания элемента
 // взята из интенсива
 export const createElem = (tag, attr = {}, text) => {
   const elem = document.createElement(tag);
@@ -34,7 +12,7 @@ export const createElem = (tag, attr = {}, text) => {
   return elem;
 };
 
-// * create Row возвращает динамически созданый ряд row
+// create Row возвращает динамически созданый ряд row
 export const createRow = (
     rowNumber, {
       id,
@@ -50,7 +28,7 @@ export const createRow = (
   const row = createElem('tr');
   row.id = id;
   row.classList.add('product');
-  row.title = title;
+  row.title = `${title}: ${description}`;
   row.dataset.description = description;
 
   const cellNumb = createElem(

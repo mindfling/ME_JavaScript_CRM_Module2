@@ -1,7 +1,7 @@
 // данные списик объектов наших товаров
 export const initialData = [
   {
-    id: 1341778644,
+    id: '134177864407',
     title: 'Смартфон RedME 15M 64GB',
     price: 100,
     description: 'представитель флагманской линейки выпущенной во второй',
@@ -11,12 +11,12 @@ export const initialData = [
     count: 1,
     units: 'шт',
     images: {
-      small: 'img/smrtxiaomi11t-m.jpg',
-      big: 'img/smrtxiaomi11t-b.jpg',
+      small: 'http://dummy-images.com/business/dummy-336x280-Numbers.jpg',
+      big: 'http://dummy-images.com/business/dummy-884x680-Numbers.jpg',
     },
   },
   {
-    id: 1736393474,
+    id: '173639347407',
     title: 'Смартфон Xiaomi 11T 8/128GB',
     price: 150,
     description: 'Смартфон Xiaomi 11T – это представитель флагманской линейки' +
@@ -29,27 +29,27 @@ export const initialData = [
     count: 3,
     units: 'шт',
     images: {
-      small: 'img/smrtxiaomi11t-m.jpg',
-      big: 'img/smrtxiaomi11t-b.jpg',
+      small: 'http://dummy-images.com/business/dummy-456x300-Tax.jpg',
+      big: 'http://dummy-images.com/business/dummy-686x900-Tax.jpg',
     },
   },
   {
-    id: 638181385,
-    title: 'Радиоуправляемый автомобиль Cheetan',
+    id: '63818138507',
+    title: 'Радиоуправляемый мото автомобиль Motocross',
     price: 400,
     description: `Внедорожник на дистанционном управлении. 
-    Скорость 25км/ч. Возраст 7 - 14 лет`,
+    Скорость 25км/ч. Возраст 27 - 44 лет`,
     category: 'toys',
     discont: 5,
     count: 1,
     units: 'шт',
     images: {
-      small: 'img/cheetancar-m.jpg',
-      big: 'img/cheetancar-b.jpg',
+      small: 'http://dummy-images.com/sport/dummy-300x300-Motocross.jpg',
+      big: 'http://dummy-images.com/sport/dummy-500x500-Motocross.jpg',
     },
   },
   {
-    id: 929722312,
+    id: '92972231207',
     title: 'ТВ приставка MECOOL KI',
     price: 100,
     description: 'Всего лишь один шаг сделает ваш телевизор умным, ' +
@@ -60,12 +60,12 @@ export const initialData = [
     count: 4,
     units: 'шт',
     images: {
-      small: 'img/tvboxmecool-m.jpg',
-      big: 'img/tvboxmecool-b.jpg',
+      small: 'http://dummy-images.com/business/dummy-420x360-Laptop.jpg',
+      big: 'http://dummy-images.com/business/dummy-920x560-Laptop.jpg',
     },
   },
   {
-    id: 2774703365,
+    id: '277470336507',
     title: 'Витая пара PROConnect 01-0043-3-25',
     price: 20,
     description: 'Витая пара Proconnect 01-0043-3-25 является сетевым кабелем' +
@@ -81,8 +81,8 @@ export const initialData = [
     count: 10,
     units: 'м',
     images: {
-      small: 'img/lan_proconnect43-3-25.jpg',
-      big: 'img/lan_proconnect43-3-25-b.jpg',
+      small: 'http://dummy-images.com/abstract/dummy-454x280-Rope.jpg',
+      big: 'http://dummy-images.com/abstract/dummy-628x860-Rope.jpg',
     },
   },
 ];

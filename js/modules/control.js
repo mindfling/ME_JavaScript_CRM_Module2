@@ -1,7 +1,6 @@
 import {getRandomInt} from './hash.js';
 import {createRow} from './createElements.js';
 
-import * as domElemenst from './createElements.js';
 import {
   addProductData,
   getDataProduct,
@@ -10,7 +9,38 @@ import {
 } from './serviceStorage.js';
 
 import {clearList, renderGoods} from './render.js';
-const {
+
+
+// get Count Total Price
+const getCountTotalPrice = (data) => {
+  let total = 0;
+  total = data.reduce((previousSumm, currentProduct) => {
+    const sum = currentProduct.count * currentProduct.price;
+    currentProduct.sum = sum;
+    // return (previousSumm + currentProduct.count * currentProduct.price);
+    return (previousSumm + sum);
+  }, 0);
+  return total.toFixed(2);
+};
+
+// count Total Price всей таблицы
+export const countTotalPrice = (total) => {
+  // eslint-disable-next-line no-unused-vars
+  const euroSymb = '&#8364;';
+  const rubSymb = '&#8381;';
+  const data = getProductData();
+  total.innerHTML = `${rubSymb} ${getCountTotalPrice(data)}`;
+};
+
+const addProductPage = (list, product) => {
+  const data = getProductData();
+  // следующий номер товара в таблице ?
+  const nextRowNumber = data.length;
+  list.append(createRow(nextRowNumber, product));
+};
+
+// modal Control обработка событий модального окна с оверлеем
+export const modalControl = ({
   overlay,
   vendorCodeID,
   form,
@@ -24,105 +54,66 @@ const {
   price,
   addGoods,
   tableBody,
-  totalPrice,
-} = domElemenst;
-
-let isDiscount = checkboxDiscount.checked;
-
-// * get Count Total Price
-const getCountTotalPrice = (data) => {
-  let total = 0;
-  total = data.reduce((previousSumm, currentProduct) => {
-    // сумма отдельного товара
-    const sum = currentProduct.count * currentProduct.price;
-    currentProduct.sum = sum;
-    // return (previousSumm + currentProduct.count * currentProduct.price);
-    return (previousSumm + sum);
-  }, 0);
-  return total;
-};
-
-// * count Total Price
-export const countTotalPrice = () => {
-  const data = getProductData();
-  const euroSymb = '&#8364;';
-  const total = getCountTotalPrice(data);
-  // totalPrice.textContent = '€ ' + total;
-  totalPrice.innerHTML = euroSymb + ' ' + total;
-};
-
-const addProductPage = (list, product) => {
-  const data = getProductData();
-  // следующий номер товара в таблице
-  const nextRowNumber = data.length;
-  list.append(createRow(nextRowNumber, product));
-};
-
-// * modal Control
-export const modalControl = () => {
-  // модальное окно с оверлеем
-  // обработка событий окна и формы
-
-  const getVendorID = () => {
+  totalPrice: total,
+}) => {
+  // eslint-disable-next-line no-unused-vars
+  const getVendorRandomID = () => {
     const randomID = getRandomInt(100000000, 999999999);
     return randomID;
   };
 
-  let summ = 0;
-  const totalSumm = form.elements.total; // сумма out
+  const getVendorID = () => Math.random().toString().substring(2, 14);
 
+  let summ = 0;
   const totalFormCount = () => {
     // пересчитываем общую сумму
-    summ = parseInt(price.value) * parseInt(count.value);
+    const totalSumm = form.elements.total; // сумма out
+    summ = (parseFloat(price.value) * parseInt(count.value)).toFixed(2);
+    // вычет скидки в %%
     if (checkboxDiscount.checked) {
-      // вычет скидки в %%
-      summ -= summ * parseInt(discountCount.value) / 100;
+      summ = (summ * (1 - parseFloat(discountCount.value) / 100)).toFixed(2);
     }
-    totalSumm.value = summ ? '€ ' + summ : '0.00';
+    totalSumm.value = summ ? `€ ${summ}` : '0.00';
     return summ;
   };
 
-  // * открываем модальное окно
+  // открываем модальное окно
   const openModal = (overlay) => {
     overlay.classList.add('active');
-    //  при открытии формы автоматически создаем ID товара
+    //  при открытии формы создаем ID товара и ставим поля по умолчанию
     vendorCodeID.textContent = getVendorID();
-    console.log('vendor Code ID ', vendorCodeID.textContent);
-    //  ставим некоторые поля в значения по умолчанию
     checkboxDiscount.checked = true;
     discountCount.disabled = false;
     discountCount.value = 0;
     count.value = 0;
     price.value = 0;
-    //  общая сумма в окне
-    totalFormCount();
+    totalFormCount(); // 0
     console.log('Open Modal');
   };
 
-  // * закрываем модальное окно
+  // закрываем модальное окно
   const closeModal = (overlay) => {
     overlay.classList.remove('active');
     console.log('Close Modal');
   };
 
-  // * клик по кнопке Добавить Товар
+  // клик по кнопке Добавить Товар
   addGoods.addEventListener('click', (e) => {
     openModal(overlay);
   });
 
-  // * обработчик расфокуса
+  // обработчик расфокуса blur
   const blurHandler = e => {
     const target = e.target;
     if (target === count ||
         target === price ||
         target === checkboxDiscount ||
         target === discountCount) {
-      // totalSumm.value = 'Ru ' + summ;
       totalFormCount();
     }
   };
 
-  // * событие теряет фокус
+  // событие когда поле теряет фокус
   productName.addEventListener('blur', blurHandler);
   category.addEventListener('blur', blurHandler);
   description.addEventListener('blur', blurHandler);
@@ -132,16 +123,15 @@ export const modalControl = () => {
   price.addEventListener('blur', blurHandler);
 
 
-  // * обработка события ввода формы SUBMIT
+  // обработка события ввода формы submit
   form.addEventListener('submit', e => {
     e.preventDefault();
     console.log('form submit');
     const formData = new FormData(form);
-
     const product = Object.fromEntries(formData);
+    const isDiscount = checkboxDiscount.checked; // ???
     product.discount = isDiscount; // checked
     product.discount_count = product.discount ? product.discount_count : 0;
-
     const newProduct = {
       id: vendorCodeID.textContent,
       title: product.name,
@@ -159,26 +149,26 @@ export const modalControl = () => {
     addProductData(newProduct); // добавляем данные в хранилище
     addProductPage(tableBody, newProduct); // дабавляем строку товара в таблицу
 
-    countTotalPrice();
+    countTotalPrice(total);
     form.reset();
     closeModal(overlay);
   });
 
 
-  // * обработчик на оверлей
+  // обработчик на оверлей
   overlay.addEventListener('click', e => {
     const target = e.target;
     if (target === overlay ||
         target.closest('.modal__close')) {
-      console.log('click to close modal');
       closeModal(overlay);
     }
   });
 
 
-  // * ставим чекбокс дискаунт
+  // ставим чекбокс дискаунт
   checkboxDiscount.addEventListener('change', e => {
-    isDiscount = checkboxDiscount.checked;
+    // eslint-disable-next-line no-unused-vars
+    const isDiscount = checkboxDiscount.checked;
     const disabled = discountCount.disabled;
     if (disabled) {
       discountCount.disabled = false;
@@ -196,9 +186,9 @@ export const modalControl = () => {
   closeModal(overlay);
 };
 
-// * обработчик для кнопок товаров
-export const tableControl = (data) => {
-  tableBody.addEventListener('click', (e) => {
+// обработчик для кнопок товаров
+export const tableControl = (list, data, total) => {
+  list.addEventListener('click', (e) => {
     const target = e.target;
     // Клик по кнопке Изображение товара
     if (target.classList.contains('table__btn_pic')) {
@@ -220,10 +210,10 @@ export const tableControl = (data) => {
     ID ${productId} 
     ${getDataProduct(data, productId)?.title}`)) {
         removeProductData(productId);
-        clearList(tableBody);
+        clearList(list);
         data = getProductData();
-        renderGoods(data);
-        countTotalPrice();
+        renderGoods(list, data);
+        countTotalPrice(total);
         console.log('Удалили товар');
       } else {
         console.log('Отмена!\nТовар не удален');
