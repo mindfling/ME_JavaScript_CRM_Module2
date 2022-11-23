@@ -22,8 +22,11 @@ export const createRow = (
       units,
       count,
       price,
+      image,
     }) => {
   // генерируем динамически по элементам
+  console.log('image URL: ', id, image);
+
   const euroSymb = '&#8364;';
   const row = createElem('tr');
   row.id = id;
@@ -79,16 +82,21 @@ export const createRow = (
   const cellBtnsGroup = createElem('td', {
     className: 'table__cell table__cell_btn-wrapper',
   });
+
   const btnPic = createElem('button', {
     className: 'table__btn table__btn_pic',
     type: 'button',
     title: 'Изображение товара',
+    // dataset: {pic: 'URL'},
   });
+  btnPic.dataset.pic = (image ? image : 'url');
+
   const btnEdit = createElem('button', {
     className: 'table__btn table__btn_edit',
     type: 'button',
     title: 'Редактировать товар',
   });
+
   const btnDel = createElem('button', {
     className: 'table__btn table__btn_del',
     type: 'button',
