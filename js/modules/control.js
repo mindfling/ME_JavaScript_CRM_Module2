@@ -12,6 +12,8 @@ import {
 
 import {clearList, renderGoods} from './render.js';
 
+import {pictureWindow} from './pictureModal.js';
+
 
 // get Count Total Price
 const getCountTotalPrice = (data) => {
@@ -195,40 +197,11 @@ export const tableControl = (list, data, total) => {
     // Клик по кнопке Изображение товара
     if (target.classList.contains('table__btn_pic')) {
       console.log('кнопка Добавить картинку');
-      console.log('url: ', target.dataset.pic);
+
       const url = target.dataset?.pic;
-      // размеры окна
       const WIN_WIDTH = 800;
       const WIN_HEIGHT = 600;
-      // вычисляем позицию окна по центру доступной области экрана
-      const winPosX = (window.screen.availWidth - WIN_WIDTH) / 2;
-      const winPosY = (window.screen.availHeight - WIN_HEIGHT) / 2;
-      console.log('winPosX: ', winPosX, 'winPosY: ', winPosY);
-
-      // const win = window.open('about:blank', '', 'popup,width=800,height=600');
-      const win = window.open('about:blank', '', `popup,width=${WIN_WIDTH},height=${WIN_HEIGHT},left=${winPosX},top=${winPosY}`);
-      win.document.body.style.cssText = `
-      box-sizing: border-box;
-      margin: 0px;
-      padding: 0px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      height: 100%;
-      `;
-
-      win.document.body.innerHTML = `
-      <img src="${url}" alt="image" class="image" style="display:flex;justify-content:center;align-items:center;width:100%;height:100%;object-fit:cover;">
-      `;
-
-      win.document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') {
-          console.log('close event: ', event.key);
-          win.close();
-        }
-      });
-
+      pictureWindow(WIN_WIDTH, WIN_HEIGHT, url);
       return;
     }
     // Клик по кнопке Редактировать товар
