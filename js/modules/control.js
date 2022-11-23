@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import {getRandomInt} from './hash.js';
+// import {getRandomInt} from './hash.js';
 
 import {createRow} from './createElements.js';
 
@@ -12,7 +12,9 @@ import {
 
 import {clearList, renderGoods} from './render.js';
 
-import {pictureWindow} from './pictureModal.js';
+import {openPictureWindow} from './pictureModal.js';
+
+import {getVendorID} from './hash.js';
 
 
 // get Count Total Price
@@ -35,6 +37,7 @@ export const countTotalPrice = (total) => {
   const data = getProductData();
   total.innerHTML = `${rubSymb} ${getCountTotalPrice(data)}`;
 };
+
 
 const addProductPage = (list, product) => {
   const data = getProductData();
@@ -60,15 +63,9 @@ export const modalControl = ({
   tableBody,
   totalPrice: total,
 }) => {
-  // eslint-disable-next-line no-unused-vars
-  const getVendorRandomID = () => {
-    const randomID = getRandomInt(100000000, 999999999);
-    return randomID;
-  };
-
-  const getVendorID = () => Math.random().toString().substring(2, 14);
-
+  // текущая сумма товара
   let summ = 0;
+
   const totalFormCount = () => {
     // пересчитываем общую сумму
     const totalSumm = form.elements.total; // сумма out
@@ -82,9 +79,9 @@ export const modalControl = ({
   };
 
   // открываем модальное окно
+  //  при открытии формы создаем ID товара и ставим поля по умолчанию
   const openModal = (overlay) => {
     overlay.classList.add('active');
-    //  при открытии формы создаем ID товара и ставим поля по умолчанию
     vendorCodeID.textContent = getVendorID();
     checkboxDiscount.checked = true;
     discountCount.disabled = false;
@@ -92,13 +89,13 @@ export const modalControl = ({
     count.value = 0;
     price.value = 0;
     totalFormCount(); // 0
-    console.log('Open Modal');
+    // console.log('Open Modal');
   };
 
   // закрываем модальное окно
   const closeModal = (overlay) => {
     overlay.classList.remove('active');
-    console.log('Close Modal');
+    // console.log('Close Modal');
   };
 
   // клик по кнопке Добавить Товар
@@ -130,6 +127,7 @@ export const modalControl = ({
   // обработка события ввода формы submit
   form.addEventListener('submit', e => {
     e.preventDefault();
+    const testURL = 'http://dummy-images.com/business/dummy-400x300-Laptop.jpg';
     console.log('form submit');
     const formData = new FormData(form);
     const product = Object.fromEntries(formData);
@@ -147,12 +145,15 @@ export const modalControl = ({
       discont: product.discount,
       discountCount: product.discount_count ? product.discount_count : 0,
       summ,
+      images: {
+        small: testURL,
+        big: testURL,
+      },
     };
-    console.log('Добавляем товар');
+    console.log('Добавляем товар', newProduct);
     // ?? можно ли обединить
     addProductData(newProduct); // добавляем данные в хранилище
     addProductPage(tableBody, newProduct); // дабавляем строку товара в таблицу
-
     countTotalPrice(total);
     form.reset();
     closeModal(overlay);
@@ -197,11 +198,10 @@ export const tableControl = (list, data, total) => {
     // Клик по кнопке Изображение товара
     if (target.classList.contains('table__btn_pic')) {
       console.log('кнопка Добавить картинку');
-
       const url = target.dataset?.pic;
       const WIN_WIDTH = 800;
       const WIN_HEIGHT = 600;
-      pictureWindow(WIN_WIDTH, WIN_HEIGHT, url);
+      openPictureWindow(WIN_WIDTH, WIN_HEIGHT, url);
       return;
     }
     // Клик по кнопке Редактировать товар

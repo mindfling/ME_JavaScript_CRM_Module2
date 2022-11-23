@@ -22,10 +22,10 @@ export const createRow = (
       units,
       count,
       price,
-      image,
+      images,
     }) => {
   // генерируем динамически по элементам
-  console.log('image URL: ', id, image);
+  console.log('images URL: ', id, images);
 
   const euroSymb = '&#8364;';
   const row = createElem('tr');
@@ -86,21 +86,20 @@ export const createRow = (
   const btnPic = createElem('button', {
     className: 'table__btn table__btn_pic',
     type: 'button',
-    title: 'Изображение товара',
-    // dataset: {pic: 'URL'},
+    title: `Изображение товара: ${title}`,
   });
-  btnPic.dataset.pic = (image ? image : 'url');
+  btnPic.dataset.pic = images.big;
 
   const btnEdit = createElem('button', {
     className: 'table__btn table__btn_edit',
     type: 'button',
-    title: 'Редактировать товар',
+    title: `Редактировать: ${title}`,
   });
 
   const btnDel = createElem('button', {
     className: 'table__btn table__btn_del',
     type: 'button',
-    title: 'Удалить товар',
+    title: `Удалить товар: ${title}`,
   });
   cellBtnsGroup.append(btnPic, btnEdit, btnDel);
 

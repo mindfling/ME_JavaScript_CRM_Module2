@@ -1,5 +1,6 @@
 // it will make hash codes for ID
 
+
 // * hash Code to String
 const hashCode = (str) => {
   let hash = 0;
@@ -10,6 +11,7 @@ const hashCode = (str) => {
   }
   return Math.abs(hash).toString();
 };
+
 
 // * make Data ID Hash
 export const makeDataIdHash = (data) => {
@@ -29,3 +31,12 @@ export const getRandomInt = (min, max) => {
   max = Math.floor(min > max ? min : max);
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
+
+
+// * get Vendor random Id in form submit
+// export const getVendorRandomID = () => getRandomInt(100000000, 999999999);
+export const getVendorRandomID = () => getRandomInt(1e8, (10e8 - 1));
+
+
+// * use it for get Vendor Id of product
+export const getVendorID = () => Math.random().toString().substring(2, 14);

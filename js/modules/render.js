@@ -24,7 +24,10 @@ export const renderGoods = (list, productsData = []) => {
           units: product.units,
           price: product.price,
           count: product.count,
-          image: product?.images?.big, // отправляем адрес меньшей картинки
+          images: {
+            big: product?.images?.big,
+            small: product?.images?.small,
+          },
         }),
       );
     });
